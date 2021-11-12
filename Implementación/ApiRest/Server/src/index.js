@@ -9,15 +9,16 @@ app.set('port', process.env.PORT || 4000);
 
 //Middlewares
 app.use(morgan('dev'));
+app.use(express.json());
 
 // Variables globales
 
 
 //Rutas
 app.use(require('./routes/index.js'));
-app.use(express.json());
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
+app.use('/feed', require('./routes/feed'));
 
 //Public
 

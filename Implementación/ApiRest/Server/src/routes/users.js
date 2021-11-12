@@ -1,13 +1,11 @@
+
+//Aqui van las direcciones para manipular usuarios
 const express = require('express');
 const pool = require('../database');
 const router = express.Router();
 
-
-router.get('/login', (req, res) => {
-    pool.query("SELECT * FROM Usuario we")
-})
-
-router.post('/login', async (req, res) =>{
+//Metodo prueba de registro de usuario
+router.post('/signup', async (req, res) =>{
     const { usr_nombreUsuario, usr_contraseña, usr_nombre, usr_estatus} = req.body;
     const nuevoUsuario = {
         usr_nombreUsuario ,
@@ -20,4 +18,3 @@ router.post('/login', async (req, res) =>{
 })
 
 module.exports = router;
-
