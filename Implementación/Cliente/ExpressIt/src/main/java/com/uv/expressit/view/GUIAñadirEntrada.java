@@ -4,6 +4,7 @@
  */
 package com.uv.expressit.view;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
@@ -40,6 +41,11 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
         btnAñadirMultimedia = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtHashtags = new javax.swing.JTextField();
+        txtAñadirHashtags = new javax.swing.JTextField();
+        btnAñadirHashtag = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,9 +68,17 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(txtEntrada);
 
-        bg.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 50, 558, 173));
+        bg.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 50, 620, 160));
 
         btnPublicar.setBackground(new java.awt.Color(0, 116, 158));
+        btnPublicar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnPublicarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnPublicarMouseExited(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -77,18 +91,15 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
             btnPublicarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnPublicarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addContainerGap())
         );
         btnPublicarLayout.setVerticalGroup(
             btnPublicarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnPublicarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        bg.add(btnPublicar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 250, 130, 40));
+        bg.add(btnPublicar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 300, 120, 40));
 
         btnCancelar.setBackground(new java.awt.Color(120, 0, 14));
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -113,13 +124,10 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
         );
         btnCancelarLayout.setVerticalGroup(
             btnCancelarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnCancelarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        bg.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 110, 40));
+        bg.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 110, 40));
 
         lbContadorCatacteres.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         lbContadorCatacteres.setForeground(new java.awt.Color(255, 255, 255));
@@ -128,6 +136,14 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
         bg.add(lbContadorCatacteres, new org.netbeans.lib.awtextra.AbsoluteConstraints(399, 10, 160, 30));
 
         btnAñadirMultimedia.setBackground(new java.awt.Color(0, 116, 158));
+        btnAñadirMultimedia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAñadirMultimediaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAñadirMultimediaMouseExited(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("DejaVu Sans", 1, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -151,15 +167,65 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
         jLabel4.setText("<nombre_foto>");
         bg.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 15, 310, 20));
 
+        jLabel5.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Hashtags: ");
+        bg.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, 40));
+
+        txtHashtags.setEditable(false);
+        txtHashtags.setBackground(new java.awt.Color(41, 41, 43));
+        txtHashtags.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
+        txtHashtags.setForeground(new java.awt.Color(153, 153, 153));
+        txtHashtags.setText("Hashtags");
+        bg.add(txtHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 250, 40));
+
+        txtAñadirHashtags.setBackground(new java.awt.Color(41, 41, 43));
+        txtAñadirHashtags.setForeground(new java.awt.Color(153, 153, 153));
+        txtAñadirHashtags.setText("Añade #hashtags");
+        txtAñadirHashtags.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtAñadirHashtagsMouseClicked(evt);
+            }
+        });
+        bg.add(txtAñadirHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 150, 40));
+
+        btnAñadirHashtag.setBackground(new java.awt.Color(0, 116, 158));
+        btnAñadirHashtag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAñadirHashtagMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAñadirHashtagMouseExited(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("+");
+
+        javax.swing.GroupLayout btnAñadirHashtagLayout = new javax.swing.GroupLayout(btnAñadirHashtag);
+        btnAñadirHashtag.setLayout(btnAñadirHashtagLayout);
+        btnAñadirHashtagLayout.setHorizontalGroup(
+            btnAñadirHashtagLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+        );
+        btnAñadirHashtagLayout.setVerticalGroup(
+            btnAñadirHashtagLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
+        bg.add(btnAñadirHashtag, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 225, 50, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
         );
 
         pack();
@@ -185,6 +251,36 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
             this.txtEntrada.setEditable(true);
         }
     }//GEN-LAST:event_txtEntradaKeyPressed
+
+    private void btnAñadirHashtagMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirHashtagMouseEntered
+        this.btnAñadirHashtag.setBackground(Color.decode("#00b0f0"));
+    }//GEN-LAST:event_btnAñadirHashtagMouseEntered
+
+    private void btnAñadirHashtagMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirHashtagMouseExited
+        this.btnAñadirHashtag.setBackground(Color.decode("#00749E"));
+    }//GEN-LAST:event_btnAñadirHashtagMouseExited
+
+    private void btnAñadirMultimediaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseEntered
+        this.btnAñadirMultimedia.setBackground(Color.decode("#00b0f0"));
+    }//GEN-LAST:event_btnAñadirMultimediaMouseEntered
+
+    private void btnAñadirMultimediaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseExited
+       this.btnAñadirMultimedia.setBackground(Color.decode("#00749E"));
+    }//GEN-LAST:event_btnAñadirMultimediaMouseExited
+
+    private void btnPublicarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPublicarMouseEntered
+        this.btnPublicar.setBackground(Color.decode("#00b0f0"));
+    }//GEN-LAST:event_btnPublicarMouseEntered
+
+    private void btnPublicarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPublicarMouseExited
+        this.btnPublicar.setBackground(Color.decode("#00749E"));
+    }//GEN-LAST:event_btnPublicarMouseExited
+
+    private void txtAñadirHashtagsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtAñadirHashtagsMouseClicked
+        if(this.txtAñadirHashtags.getText().equals("Añade #hashtags")){
+            this.txtAñadirHashtags.setText("");
+        }
+    }//GEN-LAST:event_txtAñadirHashtagsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -223,6 +319,7 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
+    private javax.swing.JPanel btnAñadirHashtag;
     private javax.swing.JPanel btnAñadirMultimedia;
     private javax.swing.JPanel btnCancelar;
     private javax.swing.JPanel btnPublicar;
@@ -230,8 +327,12 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbContadorCatacteres;
+    private javax.swing.JTextField txtAñadirHashtags;
     private javax.swing.JTextArea txtEntrada;
+    private javax.swing.JTextField txtHashtags;
     // End of variables declaration//GEN-END:variables
 }

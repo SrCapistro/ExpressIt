@@ -12,15 +12,19 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -241,16 +245,23 @@ public class GUIlogin extends javax.swing.JFrame {
         if(txtNombreUsuario.getText().equals("Ingrese su nombre de usuario") || txtContraseña.getPassword().toString().equals("")){
             this.lbDatosErroneos.setVisible(true);
         }else{
-            String nombreUsuario = txtNombreUsuario.getText();
-            String contraseña = new String(txtContraseña.getPassword());
-            usuarioLogeado = DAOUsuario.ObtenerLogin(nombreUsuario, contraseña);
-            if(usuarioLogeado != null){
-                JOptionPane.showMessageDialog(this,"Bienvenido: "+usuarioLogeado.getNombreCompletoUsuario());
-                GUIInicio pantallaInicial = new GUIInicio();
-                pantallaInicial.setVisible(true);
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(null, "Usuario no encontrado");
+            try {
+                String nombreUsuario = txtNombreUsuario.getText();
+                String contraseña = new String(txtContraseña.getPassword());
+                usuarioLogeado = DAOUsuario.ObtenerLogin(nombreUsuario, contraseña);
+                if(usuarioLogeado != null){
+                    if(usuarioLogeado.getEstatusUsuario().equals("Inactivo")){
+                        JOptionPane.showMessageDialog(null, "Tu cuenta esta inhabilitada");
+                    }else{
+                        GUIInicio pantallaInicial = new GUIInicio();
+                        pantallaInicial.setVisible(true);
+                        this.dispose();
+                    }
+                }
+            } catch (IOException e) {
+               e.printStackTrace();
+            }catch(JSONException jex){
+                jex.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnIniciarSesionMouseClicked

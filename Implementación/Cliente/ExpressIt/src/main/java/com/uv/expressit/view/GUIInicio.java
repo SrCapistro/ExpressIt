@@ -4,16 +4,27 @@
  */
 package com.uv.expressit.view;
 
+import com.uv.expressit.DAO.DAOEntrada;
+import com.uv.expressit.POJO.Entrada;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
@@ -27,12 +38,14 @@ import javax.swing.border.LineBorder;
  */
 public class GUIInicio extends javax.swing.JFrame {
 
+    private ArrayList<Entrada> listaEntradasSeguidos = null;
     int contador = 0;
     /**
      * Creates new form GUIInicio
      */
     public GUIInicio() {
         initComponents();
+        cargarEntradasSeguidos();
     }
 
     /**
@@ -48,7 +61,7 @@ public class GUIInicio extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         bg = new javax.swing.JPanel();
         mainSection = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        txtTitulo = new javax.swing.JLabel();
         btnInicio = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         btnPerfil = new javax.swing.JPanel();
@@ -58,7 +71,6 @@ public class GUIInicio extends javax.swing.JFrame {
         btnCerrarSesion = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         profileSection = new javax.swing.JPanel();
-        btnAñadirBoton = new javax.swing.JButton();
         bgContent = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         content = new javax.swing.JPanel();
@@ -93,14 +105,19 @@ public class GUIInicio extends javax.swing.JFrame {
         mainSection.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         mainSection.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("DejaVu Sans", 1, 33)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Express It");
-        mainSection.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 190, 70));
+        txtTitulo.setFont(new java.awt.Font("DejaVu Sans", 1, 33)); // NOI18N
+        txtTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        txtTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtTitulo.setText("Express It");
+        mainSection.add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 190, 70));
 
         btnInicio.setBackground(new java.awt.Color(13, 13, 13));
         btnInicio.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        btnInicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInicioMouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -181,6 +198,9 @@ public class GUIInicio extends javax.swing.JFrame {
         btnCerrarSesion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCerrarSesionMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnCerrarSesionMouseEntered(evt);
             }
@@ -216,28 +236,15 @@ public class GUIInicio extends javax.swing.JFrame {
 
         profileSection.setBackground(new java.awt.Color(13, 13, 13));
 
-        btnAñadirBoton.setText("Añadir boton");
-        btnAñadirBoton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirBotonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout profileSectionLayout = new javax.swing.GroupLayout(profileSection);
         profileSection.setLayout(profileSectionLayout);
         profileSectionLayout.setHorizontalGroup(
             profileSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(profileSectionLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(btnAñadirBoton)
-                .addContainerGap(100, Short.MAX_VALUE))
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         profileSectionLayout.setVerticalGroup(
             profileSectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profileSectionLayout.createSequentialGroup()
-                .addContainerGap(532, Short.MAX_VALUE)
-                .addComponent(btnAñadirBoton)
-                .addGap(161, 161, 161))
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
         bg.add(profileSection, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 280, 720));
@@ -349,57 +356,6 @@ public class GUIInicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAñadirBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirBotonActionPerformed
-        contador = contador + 10;
-        BorderLayout borderLayout = new BorderLayout();
-        //Border lineBorder = BorderFactory.createLineBorder(Color.BLACK,4);
-        
-        JPanel pane = new JPanel();
-        JPanel paneBotones = new JPanel();
-        
-        JLabel btnMeGusta = new JLabel("Me gusta");
-        JLabel btnComentar = new JLabel("Comentarios");
-        btnMeGusta.setFont(new Font("SansSerif", Font.BOLD, 16));
-        btnComentar.setFont(new Font("SansSerif", Font.BOLD, 16));
-        btnMeGusta.setForeground(Color.white);
-        btnComentar.setForeground(Color.white);
-        
-        JLabel lbContadorMeGusta = new JLabel("     "+"30"+"     ");
-        lbContadorMeGusta.setForeground(Color.white);
-        JLabel lbContadorComentarios = new JLabel("     "+"10"+"     ");
-        lbContadorComentarios.setForeground(Color.white);
-        JTextArea areaText = new JTextArea("Use this to specify where excess space in a layout should go. Think of it as semi-wet glue -- stretchy and expandable, yet taking up no space unless you pull apart the components that it's sticking to. For example, by putting horizontal glue between two components in a left-to-right box, you make any extra space go between those components, instead of to the right of all the components. Here's an example of making the space in a left-to-right box go between two components, instead of to the right of the components: ");
-        areaText.setLineWrap(true);
-        areaText.setForeground(Color.white);
-        areaText.setBackground(Color.decode("#29292B"));
-        areaText.setEditable(false);
-        JLabel lbUsuarioTuit = new JLabel("Publicado por: @capistran");
-        lbUsuarioTuit.setForeground(Color.white);
-        lbUsuarioTuit.setFont(new Font("SansSerif", Font.BOLD, 20));
-        areaText.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        areaText.setPreferredSize(new Dimension(200,200));
-        
-        paneBotones.setLayout(new BoxLayout(paneBotones, BoxLayout.X_AXIS));
-        paneBotones.add(btnMeGusta);
-        paneBotones.add(lbContadorMeGusta);
-        paneBotones.setBackground(Color.decode("#141415"));
-        
-        paneBotones.add(btnComentar);
-        paneBotones.add(lbContadorComentarios);
-        paneBotones.add(Box.createHorizontalGlue());
-        
-        pane.setLayout(borderLayout);
-        pane.add(lbUsuarioTuit, BorderLayout.PAGE_START);
-        pane.add(areaText, BorderLayout.CENTER);
-        pane.add(paneBotones, BorderLayout.PAGE_END );
-        pane.setBackground(Color.decode("#141415"));
-        
-        //pane.setBorder(lineBorder);
-        this.content.add(pane);
-        this.content.add(Box.createRigidArea(new Dimension(15,15)));
-        content.updateUI();
-    }//GEN-LAST:event_btnAñadirBotonActionPerformed
-
     private void btnTuitearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTuitearMouseClicked
         GUIAñadirEntrada nuevaEntrada = new GUIAñadirEntrada();
         nuevaEntrada.setVisible(true);
@@ -433,6 +389,114 @@ public class GUIInicio extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_txtBuscadorKeyTyped
 
+    private void btnCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCerrarSesionMouseClicked
+        GUIlogin pantallaLogin = new GUIlogin();
+        pantallaLogin.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarSesionMouseClicked
+
+    private void btnInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseClicked
+        cargarEntradasSeguidos();
+        this.btnInicio.setBackground(Color.BLACK);
+    }//GEN-LAST:event_btnInicioMouseClicked
+
+    public void cargarEntradasSeguidos(){
+        if(this.listaEntradasSeguidos != null){
+            this.listaEntradasSeguidos.clear();
+            this.content.removeAll();
+        }
+        try {
+           this.listaEntradasSeguidos = DAOEntrada.obtenerEntradasSeguidor(GUIlogin.usuarioLogeado.getIdUsuario());
+           mostrarEntradas(listaEntradasSeguidos);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al cargar el feed, \ninténtelo de nuevo más tarde");
+            ex.printStackTrace();
+        }
+    }
+    
+    public void mostrarEntradas(ArrayList<Entrada> listaMostrar){
+        for(Entrada entradaMostrar:listaMostrar){
+            try {
+                entradaMostrar.setLikesEntrada(DAOEntrada.obtenerLikesEntrada(entradaMostrar.getIdEntrada()));
+                BorderLayout borderLayout = new BorderLayout();
+                BorderLayout borderLayout2 = new BorderLayout();
+                //Border lineBorder = BorderFactory.createLineBorder(Color.BLACK,4);
+                
+                JPanel seccionEntrada = new JPanel();
+                JPanel paneBotones = new JPanel();
+                JPanel multiMedia = new JPanel();
+                String meGusta = String.valueOf(entradaMostrar.getLikesEntrada());
+                JLabel lbContadorMeGusta = new JLabel(meGusta);
+                lbContadorMeGusta.setForeground(Color.white);
+                
+                JLabel btnMeGusta = new JLabel("Me gusta");
+                btnMeGusta.setFont(new Font("SansSerif", Font.BOLD, 16));
+                btnMeGusta.setForeground(Color.white);
+                btnMeGusta.addMouseListener(new MouseAdapter(){
+                    boolean isLikePressed = false;
+                    @Override
+                    public void mouseClicked(MouseEvent e){
+                        if(isLikePressed){
+                            btnMeGusta.setForeground(Color.white);
+                            int contador = Integer.parseInt(lbContadorMeGusta.getText());
+                            contador--;
+                            lbContadorMeGusta.setText(String.valueOf(contador));
+                            isLikePressed = false;
+                        }else{
+                            isLikePressed = true;
+                            int contador = Integer.parseInt(lbContadorMeGusta.getText());
+                            contador++;
+                            lbContadorMeGusta.setText(String.valueOf(contador));
+                            btnMeGusta.setForeground(Color.decode("#00749E"));
+                        }
+                    }
+                    
+                    public void mouseEntered(MouseEvent e){
+                        btnMeGusta.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    }
+                });
+                
+                
+                
+                JTextArea areaText = new JTextArea(entradaMostrar.getTextoEntrada());
+                areaText.setLineWrap(true);
+                areaText.setForeground(Color.white);
+                areaText.setBackground(Color.decode("#29292B"));
+                areaText.setEditable(false);
+                areaText.setFont(new Font("SansSerif", Font.PLAIN, 16));
+                areaText.setPreferredSize(new Dimension(200,200));
+                
+                JLabel lbUsuarioTuit = new JLabel("Publicado por: "
+                        +entradaMostrar.getNombreUsuario()+", el "+entradaMostrar.getFechaEntrada());
+                lbUsuarioTuit.setForeground(Color.white);
+                lbUsuarioTuit.setFont(new Font("SansSerif", Font.BOLD, 18));
+                
+                
+                multiMedia.setBackground(Color.decode("#29292B"));
+                multiMedia.setPreferredSize(new Dimension(200,200));
+                
+                paneBotones.setLayout(borderLayout2);
+                paneBotones.add(multiMedia, BorderLayout.PAGE_START);
+                paneBotones.add(btnMeGusta, BorderLayout.LINE_START);
+                paneBotones.add(lbContadorMeGusta, BorderLayout.LINE_END);
+                paneBotones.setBackground(Color.decode("#141415"));
+                
+                seccionEntrada.setLayout(borderLayout);
+                seccionEntrada.add(lbUsuarioTuit, BorderLayout.PAGE_START);
+                seccionEntrada.add(areaText, BorderLayout.CENTER);
+                seccionEntrada.add(paneBotones, BorderLayout.PAGE_END );
+                seccionEntrada.setBackground(Color.decode("#141415"));
+                
+                //pane.setBorder(lineBorder);
+                this.content.add(seccionEntrada);
+                this.content.add(Box.createRigidArea(new Dimension(15,15)));
+                content.updateUI();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Ocurrio un error al cargar la información");
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -471,7 +535,6 @@ public class GUIInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JPanel bgContent;
-    private javax.swing.JButton btnAñadirBoton;
     private javax.swing.JPanel btnCerrarSesion;
     private javax.swing.JPanel btnConfigurarPerfil;
     private javax.swing.JPanel btnInicio;
@@ -479,7 +542,6 @@ public class GUIInicio extends javax.swing.JFrame {
     private javax.swing.JPanel btnTuitear;
     private javax.swing.JPanel content;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -492,5 +554,6 @@ public class GUIInicio extends javax.swing.JFrame {
     private javax.swing.JPanel mainSection;
     private javax.swing.JPanel profileSection;
     private javax.swing.JTextField txtBuscador;
+    private javax.swing.JLabel txtTitulo;
     // End of variables declaration//GEN-END:variables
 }

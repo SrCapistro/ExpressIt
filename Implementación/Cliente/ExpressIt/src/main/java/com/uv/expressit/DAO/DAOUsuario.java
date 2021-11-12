@@ -7,6 +7,7 @@ package com.uv.expressit.DAO;
 import static com.uv.expressit.JSONUtils.JsonUtils.parsearJson;
 import com.uv.expressit.POJO.Usuario;
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -22,7 +23,7 @@ public class DAOUsuario {
     
     
    
-    public static Usuario ObtenerLogin(String usuario, String contraseña){
+    public static Usuario ObtenerLogin(String usuario, String contraseña) throws IOException{
         Usuario usuarioObtenido = null;
         
         //AQUÍ CREAMOS LA CADENA JSON QUE MANDAREMOS Y LE DAMOS EL FORMATO
@@ -32,8 +33,7 @@ public class DAOUsuario {
                 + "\"contraseña\": \"%s\""
                         + "}", usuario, contraseña);
         
-        try{
-            URL urlService = new URL("http://localhost:4000/auth/login"); //INGRESAMOS LA DIRECCIÓN QUE VAMOS A OCUPAR PARA EL LOGIN
+        URL urlService = new URL("http://localhost:4000/auth/login"); //INGRESAMOS LA DIRECCIÓN QUE VAMOS A OCUPAR PARA EL LOGIN
             HttpURLConnection conn = (HttpURLConnection) urlService.openConnection(); //CREAMOS LA CONEXIÓN DE TIPO HTTTPURLCONNECTION Y SAMOS EL URL QUE CREAMOS
             
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8"); //ESTA LINEA ES PARA HACERLE SABER QUE MANDAREMOS UN ELEMENTO DE TIPO JSON AL BODY 
@@ -53,22 +53,18 @@ public class DAOUsuario {
             usuarioObtenido = new Usuario();
             usuarioObtenido.setIdUsuario(jsonObtenido.getInt("usr_idUsuario"));
             usuarioObtenido.setNombreUsuario(jsonObtenido.getString("usr_nombreUsuario"));
-            usuarioObtenido.setDescripcionUsuario(jsonObtenido.get("usr_descripcion").toString());
+            usuarioObtenido.setDescripcionUsuario((String) jsonObtenido.get("usr_descripcion").toString());
             usuarioObtenido.setNombreCompletoUsuario(jsonObtenido.getString("usr_nombre"));
             usuarioObtenido.setCorreoUsuario(jsonObtenido.getString("usr_correo"));
             usuarioObtenido.setTipoUsuario(jsonObtenido.getString("usr_tipoUsuario"));
             usuarioObtenido.setFechaNacUsuario((jsonObtenido.get("usr_fechaNacimiento").toString()));
             
-            if(jsonObtenido.getInt("usr_estatus") != 1){
+            if(jsonObtenido.getInt("usr_estatus") == 1){
                 usuarioObtenido.setEstatusUsuario("Activo");
             }else{
                 usuarioObtenido.setEstatusUsuario("Inactivo");
             }
             in.close();
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }
         
         return usuarioObtenido;
     }
