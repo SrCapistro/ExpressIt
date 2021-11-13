@@ -68,4 +68,33 @@ public class DAOUsuario {
         
         return usuarioObtenido;
     }
+    
+    public static Usuario obtenerUsuarioPorUsername(String nombreUsuario) throws IOException{
+        Usuario usuarioObtenido = null;
+        
+        URL urlService = new URL("http://localhost:4000/users/"+nombreUsuario); 
+            HttpURLConnection conn = (HttpURLConnection) urlService.openConnection(); 
+            
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8"); 
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("GET");
+            
+            InputStream in = new BufferedInputStream(conn.getInputStream());  
+            String usuarioRecibido = IOUtils.toString(in, "UTF-8");
+            JSONObject jsonObtenido = new JSONObject(parsearJson(usuarioRecibido)); 
+            
+            usuarioObtenido = new Usuario();
+            usuarioObtenido.setIdUsuario((int) jsonObtenido.get("usr_idUsuario"));
+            usuarioObtenido.setNombreUsuario(jsonObtenido.getString("usr_nombreUsuario"));
+            usuarioObtenido.setDescripcionUsuario((String) jsonObtenido.get("usr_descripcion").toString());
+            usuarioObtenido.setNombreCompletoUsuario(jsonObtenido.getString("usr_nombre"));
+            usuarioObtenido.setCantidadEntradas((int) jsonObtenido.getInt("entradasTotales"));
+            usuarioObtenido.setTotalSeguidores((int) jsonObtenido.get("seguidores"));
+            usuarioObtenido.setFechaNacUsuario((jsonObtenido.get("usr_fechaNacimiento").toString()));
+            
+            in.close();
+        
+        return usuarioObtenido;
+    }
 }

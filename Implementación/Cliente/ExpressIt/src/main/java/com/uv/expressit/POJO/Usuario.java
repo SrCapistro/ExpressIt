@@ -18,7 +18,9 @@ public class Usuario {
     private String tipoUsuario;
     private String contraseñaUsuario;
     private String fechaNacUsuario;
-
+    private int cantidadEntradas;
+    private int totalSeguidores;
+    
     public Usuario() {
     }
 
@@ -102,10 +104,24 @@ public class Usuario {
     public String getFechaNacUsuario() {
         return fechaNacUsuario;
     }
-
+    
     public void setFechaNacUsuario(String fechaNacUsuario) {
         this.fechaNacUsuario = fechaNacUsuario;
     }
-    
-    
+
+    public int getCantidadEntradas() {
+        return cantidadEntradas;
+    }
+
+    public void setCantidadEntradas(int cantidadEntradas) {
+        this.cantidadEntradas = cantidadEntradas;
+    }
+
+    public int getTotalSeguidores() {
+        return totalSeguidores;
+    }
+
+    public void setTotalSeguidores(int totalSeguidores) {
+        this.totalSeguidores = totalSeguidores;
+    }
 }

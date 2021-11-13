@@ -16,6 +16,7 @@ public class Entrada {
     private String fechaEntrada;
     private String textoEntrada;
     private int likesEntrada;
+    private boolean usuarioLike;
     private ArrayList<Hashtag> listaHashtags;
 
     public Entrada() {
@@ -28,6 +29,16 @@ public class Entrada {
     public void setIdEntrada(long idEntrada) {
         this.idEntrada = idEntrada;
     }
+
+    public boolean getUsuarioLike() {
+        return usuarioLike;
+    }
+
+    public void setUsuarioLike(boolean usuarioLike) {
+        this.usuarioLike = usuarioLike;
+    }
+    
+    
 
     public String getNombreUsuario() {
         return nombreUsuario;
