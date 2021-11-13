@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 //Rutas
-app.use(require('./routes/index.js'));
+
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/feed', require('./routes/feed'));
