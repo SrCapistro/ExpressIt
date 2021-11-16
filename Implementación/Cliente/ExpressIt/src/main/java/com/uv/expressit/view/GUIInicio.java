@@ -357,7 +357,7 @@ public class GUIInicio extends javax.swing.JFrame {
                 .addComponent(scrollTextarea, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSeguirUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout profileSectionLayout = new javax.swing.GroupLayout(profileSection);
@@ -686,6 +686,8 @@ public class GUIInicio extends javax.swing.JFrame {
                 content.updateUI();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Ocurrio un error al cargar la información");
+                ex.printStackTrace();
+                System.out.println("Error: "+ ex.getMessage());
             }
         }
     }
