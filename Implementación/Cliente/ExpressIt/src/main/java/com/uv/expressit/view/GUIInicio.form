@@ -380,24 +380,28 @@
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="fotoPerfil">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
 
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="ivFotoPerfil" alignment="0" pref="200" max="32767" attributes="0"/>
+                      <Component id="lbFotoPerfil" alignment="0" pref="200" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="ivFotoPerfil" alignment="0" pref="200" max="32767" attributes="0"/>
+                      <Component id="lbFotoPerfil" alignment="0" pref="200" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="ivFotoPerfil">
+                <Component class="javax.swing.JLabel" name="lbFotoPerfil">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="&lt;foto_perfil&gt;"/>
                   </Properties>
                 </Component>
               </SubComponents>

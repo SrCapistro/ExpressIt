@@ -28,21 +28,21 @@ public class DAOUsuario {
         
         //AQUÍ CREAMOS LA CADENA JSON QUE MANDAREMOS Y LE DAMOS EL FORMATO
         //QUE SE USA EN JSON, INSERTAMOS LAS CREDENCIALES CON UN STRING.FORMAT
-        String credencialesJson = String.format(
+        /*String credencialesJson = String.format(
                 "{\"nombreUsuario\": \"%s\", "
                 + "\"contraseña\": \"%s\""
-                        + "}", usuario, contraseña);
+                        + "}", usuario, contraseña);*/
         
-        URL urlService = new URL("http://localhost:4000/auth/login"); //INGRESAMOS LA DIRECCIÓN QUE VAMOS A OCUPAR PARA EL LOGIN
+        URL urlService = new URL("http://localhost:4000/auth/login/"+usuario+"/"+contraseña); //INGRESAMOS LA DIRECCIÓN QUE VAMOS A OCUPAR PARA EL LOGIN
             HttpURLConnection conn = (HttpURLConnection) urlService.openConnection(); //CREAMOS LA CONEXIÓN DE TIPO HTTTPURLCONNECTION Y SAMOS EL URL QUE CREAMOS
             
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8"); //ESTA LINEA ES PARA HACERLE SABER QUE MANDAREMOS UN ELEMENTO DE TIPO JSON AL BODY 
             conn.setDoOutput(true);
             conn.setDoInput(true);
-            conn.setRequestMethod("POST"); //ESPECIFICAMOS EL TIPO DE METODO QUE USAREMOS, DEBE DE SER EL MISMO QUE EL DE LA API
+            conn.setRequestMethod("GET"); //ESPECIFICAMOS EL TIPO DE METODO QUE USAREMOS, DEBE DE SER EL MISMO QUE EL DE LA API
 
-            OutputStream os = conn.getOutputStream(); //CREAMOS UN STREAM DE SALIDA
-            os.write(credencialesJson.getBytes("UTF-8")); //ESCRIBIMOS Y MANDAMOS LOS BYTES DEL JSON CREADO
+            //OutputStream os = conn.getOutputStream(); //CREAMOS UN STREAM DE SALIDA
+            //os.write(credencialesJson.getBytes("UTF-8")); //ESCRIBIMOS Y MANDAMOS LOS BYTES DEL JSON CREADO
             
             InputStream in = new BufferedInputStream(conn.getInputStream());  //CREAMOS UN INPUTSTREAM PARA LA ENTRADA DEL REQUEST
             String usuarioRecibido = IOUtils.toString(in, "UTF-8"); //RECIBIMOS LA RESPUESTA

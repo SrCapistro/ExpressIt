@@ -11,7 +11,7 @@ const storagepp = multer.diskStorage({
   destination: './profile_pictures',
   filename: function(req, file, cb){
     var fileName = Date.now()+"."+mimeTypes.extension(file.mimetype)
-    var idUsuario = req.params.idEntrada
+    var idUsuario = req.params.idUsuario
     cb("", fileName);
     pool.query("INSERT into Archivo set arc_nombreArchivo = ?, arc_idUsuario = ?;",[fileName, idUsuario])
   }
@@ -21,9 +21,20 @@ const uploadpp = multer({
   storage: storagepp
 })
 
-router.get("/media/usuarios/:idUsuario", upload.single('archivo'),(req, res)=>{
+router.get("/media/usuarios/:idUsuario", uploadpp.single('archivo'),(req, res)=>{
   res.send("Listo")
 })
+
+//Obtener fotos de perfil
+router.get("/media/profile_pictures/:idUsuario", (req, res)=>{
+  pool.query("select arc_nombreArchivo from Archivo where arc_idUsuario = ?", [req.params.idUsuario], (err, rows) =>{
+    if (err) return res.send(err)
+    var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
+    res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
+    "/profile_pictures/"+nombreArchivo))
+  })
+})
+
 //Metodos para subir un archivo a un servidor, registra contenido multimedia a las entradas
 const storage = multer.diskStorage({
   destination: './media',
@@ -49,20 +60,11 @@ router.get('/media/:idEntrada', (req, res)=>{
     if (err) return res.send(err)
     var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
     res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
-    "/profile_pictures/"+nombreArchivo))
-  })
-
-})
-
-//Obtener fotos de perfil
-router.get('/media/profile_pictures/:idUsuario', (req, res)=>{
-  pool.query("select arc_nombreArchivo from Archivo where arc_idUsuario = ?",[req.params.idUsuario], (err, rows) =>{
-    if (err) return res.send(err)
-    var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
-    res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
-    "/profile_pictures/"+nombreArchivo))
+    "/media/"+nombreArchivo))
   })
 })
+
+
 
 
 module.exports = router;

@@ -4,6 +4,7 @@
  */
 package com.uv.expressit.view;
 
+import com.uv.expressit.DAO.DAOArchivo;
 import com.uv.expressit.DAO.DAOEntrada;
 import com.uv.expressit.DAO.DAOUsuario;
 import com.uv.expressit.POJO.Entrada;
@@ -14,9 +15,11 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -24,6 +27,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -71,7 +75,7 @@ public class GUIInicio extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         profileSection = new javax.swing.JPanel();
         fotoPerfil = new javax.swing.JPanel();
-        ivFotoPerfil = new javax.swing.JLabel();
+        lbFotoPerfil = new javax.swing.JLabel();
         contentPerfil = new javax.swing.JPanel();
         lbNombreUsuario = new javax.swing.JLabel();
         lbNombreCompleto = new javax.swing.JLabel();
@@ -247,18 +251,19 @@ public class GUIInicio extends javax.swing.JFrame {
 
         profileSection.setBackground(new java.awt.Color(13, 13, 13));
 
-        ivFotoPerfil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ivFotoPerfil.setText("<foto_perfil>");
+        fotoPerfil.setBackground(new java.awt.Color(255, 255, 255));
+
+        lbFotoPerfil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout fotoPerfilLayout = new javax.swing.GroupLayout(fotoPerfil);
         fotoPerfil.setLayout(fotoPerfilLayout);
         fotoPerfilLayout.setHorizontalGroup(
             fotoPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ivFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(lbFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         );
         fotoPerfilLayout.setVerticalGroup(
             fotoPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ivFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(lbFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         );
 
         contentPerfil.setBackground(new java.awt.Color(41, 41, 43));
@@ -646,9 +651,11 @@ public class GUIInicio extends javax.swing.JFrame {
                             listaEntradasSeguidos.clear();
                             content.removeAll();
                             btnInicio.setBackground(Color.decode("#0D0D0D"));
+                            BufferedImage imageMostrar = DAOArchivo.obtenerFotoPerfilUsuario(usuarioObtenido.getIdUsuario());
+                            Image imagenNueva = imageMostrar.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                            lbFotoPerfil.setIcon(new ImageIcon(imagenNueva));
                             mostrarEntradas(listaEntradasUsuario);
                         } catch (IOException ex) {
-                            ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, "Ocurrio un error al mostrar los datos");
                         }
                     }
@@ -741,7 +748,6 @@ public class GUIInicio extends javax.swing.JFrame {
     private javax.swing.JPanel content;
     private javax.swing.JPanel contentPerfil;
     private javax.swing.JPanel fotoPerfil;
-    private javax.swing.JLabel ivFotoPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -755,6 +761,7 @@ public class GUIInicio extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbEntradas;
     private javax.swing.JLabel lbFechaNacimiento;
+    private javax.swing.JLabel lbFotoPerfil;
     private javax.swing.JLabel lbNombreCompleto;
     private javax.swing.JLabel lbNombreUsuario;
     private javax.swing.JLabel lbSeguidores;
