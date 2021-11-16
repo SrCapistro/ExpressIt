@@ -6,7 +6,10 @@ package com.uv.expressit.view;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -40,7 +43,7 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
         lbContadorCatacteres = new javax.swing.JLabel();
         btnAñadirMultimedia = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lbNombreArchivo = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtHashtags = new javax.swing.JTextField();
         txtAñadirHashtags = new javax.swing.JTextField();
@@ -163,9 +166,9 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
         bg.add(btnAñadirMultimedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 110, 30));
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("<nombre_foto>");
-        bg.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 15, 310, 20));
+        lbNombreArchivo.setForeground(new java.awt.Color(255, 255, 255));
+        lbNombreArchivo.setText("<nombre_foto>");
+        bg.add(lbNombreArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 15, 310, 20));
 
         jLabel5.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -262,6 +265,24 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
     private void btnAñadirMultimediaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseEntered
         this.btnAñadirMultimedia.setBackground(Color.decode("#00b0f0"));
+        File imagen;
+        int resultado;
+        
+        GUICargarArchivo Buscador = new GUICargarArchivo();  
+        FileNameExtensionFilter format = new FileNameExtensionFilter("JPG, PNG, GIF, MP4, AVI, MKV, FLV, MOV", 
+                                                                     "jpg", "jpeg", "png", "gif", "mp4", "avi", "mkv", "flv", "mov");
+               
+        Buscador.fcBuscador.setFileFilter(format);    
+        resultado = Buscador.fcBuscador.showOpenDialog(null);
+        
+        if(JFileChooser.APPROVE_OPTION == resultado){
+            
+            imagen = Buscador.fcBuscador.getSelectedFile();
+            lbNombreArchivo.setText(imagen.getName());
+    
+            //Aquie se subira la imagen o video
+
+        }
     }//GEN-LAST:event_btnAñadirMultimediaMouseEntered
 
     private void btnAñadirMultimediaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseExited
@@ -326,11 +347,11 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbContadorCatacteres;
+    private javax.swing.JLabel lbNombreArchivo;
     private javax.swing.JTextField txtAñadirHashtags;
     private javax.swing.JTextArea txtEntrada;
     private javax.swing.JTextField txtHashtags;

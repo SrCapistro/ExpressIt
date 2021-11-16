@@ -112,7 +112,6 @@ public class GUIInicio extends javax.swing.JFrame {
         setResizable(false);
 
         bg.setBackground(new java.awt.Color(20, 20, 21));
-        bg.setBorder(null);
         bg.setRequestFocusEnabled(false);
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
