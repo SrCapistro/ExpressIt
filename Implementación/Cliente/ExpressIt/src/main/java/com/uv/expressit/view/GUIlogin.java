@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,7 @@ public class GUIlogin extends javax.swing.JFrame {
      */
     public GUIlogin() {
         initComponents();
+        this.setTitle("Iniciar sesión");
         this.setResizable(false);
         this.lbDatosErroneos.setVisible(false);
     }
@@ -243,7 +245,7 @@ public class GUIlogin extends javax.swing.JFrame {
 
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
         if(txtNombreUsuario.getText().equals("Ingrese su nombre de usuario") || txtContraseña.getPassword().toString().equals("")){
-            this.lbDatosErroneos.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Credenciales invalidas", "Login incorrécto", ERROR_MESSAGE);
         }else{
             try {
                 String nombreUsuario = txtNombreUsuario.getText();
@@ -259,9 +261,9 @@ public class GUIlogin extends javax.swing.JFrame {
                     }
                 }
             } catch (IOException e) {
-               e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Credenciales invalidas", "Login incorrécto", ERROR_MESSAGE);
             }catch(JSONException jex){
-                jex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Credenciales invalidas", "Login incorrécto", ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
