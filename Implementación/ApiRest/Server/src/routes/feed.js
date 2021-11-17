@@ -7,9 +7,11 @@ const router = express.Router();
 
 //Trae los twitts de los seguidores del usuario logeado
 router.get('/entradas_seguidores/:idUsuario', (req, res) => {
-    pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, s.sg_idSeguido, u.usr_nombreUsuario ' +
-        'from Entrada e join Seguidor s on ent_idUsuario = sg_idSeguido and sg_idSeguidor = ? ' +
-        'join Usuario u on u.usr_idUsuario = s.sg_idSeguido;' ,[req.params.idUsuario], (err, rows)=>{
+    pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, s.sg_idSeguido, ' +
+        '(SELECT COUNT(*) from MeGusta mg where mg.lk_idEntrada = e.ent_idEntrada) as likes_totales, ' +
+        '(select lk_idUsuario from MeGusta mg2 where mg2.lk_idEntrada = e.ent_idEntrada and lk_idUsuario = ?) as tuLike, u.usr_nombreUsuario ' +
+        'from Entrada e join Seguidor s on e.ent_idUsuario = s.sg_idSeguido and s.sg_idSeguidor = ?'+
+        'join Usuario u on u.usr_idUsuario = s.sg_idSeguido;' ,[req.params.idUsuario, req.params.idUsuario], (err, rows)=>{
         if(err) return res.send(err);
         res.json(rows);
     })
