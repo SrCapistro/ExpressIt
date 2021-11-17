@@ -4,6 +4,7 @@
  */
 package com.uv.expressit.view;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
 import com.uv.expressit.DAO.DAOArchivo;
 import com.uv.expressit.DAO.DAOEntrada;
 import com.uv.expressit.DAO.DAOUsuario;
@@ -16,6 +17,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -45,7 +48,10 @@ import javax.swing.border.LineBorder;
 public class GUIInicio extends javax.swing.JFrame {
 
     private ArrayList<Entrada> listaEntradasSeguidos = null;
+    private ArrayList<Entrada> listaUsuarios = null;
     int contador = 0;
+    private TextAutoCompleter autoCompletar;
+        
     /**
      * Creates new form GUIInicio
      */
@@ -53,6 +59,8 @@ public class GUIInicio extends javax.swing.JFrame {
         initComponents();
         cargarEntradasSeguidos();
         ocultarElementosPerfil();
+        autoCompletarBusqueda();
+        buscarConFiltro(txtBuscador.getText());
         btnInicio.setBackground(Color.black);
     }
     
@@ -90,8 +98,9 @@ public class GUIInicio extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         content = new javax.swing.JPanel();
         txtBuscador = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
+        btnBuscarInformacion = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
+        coFiltroBuscar = new javax.swing.JComboBox<>();
         btnTuitear = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -112,7 +121,6 @@ public class GUIInicio extends javax.swing.JFrame {
         setResizable(false);
 
         bg.setBackground(new java.awt.Color(20, 20, 21));
-        bg.setBorder(null);
         bg.setRequestFocusEnabled(false);
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -358,7 +366,7 @@ public class GUIInicio extends javax.swing.JFrame {
                 .addComponent(scrollTextarea, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSeguirUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout profileSectionLayout = new javax.swing.GroupLayout(profileSection);
@@ -414,32 +422,50 @@ public class GUIInicio extends javax.swing.JFrame {
                 txtBuscadorKeyTyped(evt);
             }
         });
-        bgContent.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 6, 530, 40));
+        bgContent.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 380, 30));
 
-        jPanel2.setBackground(new java.awt.Color(0, 116, 158));
-        jPanel2.setPreferredSize(new java.awt.Dimension(110, 34));
+        btnBuscarInformacion.setBackground(new java.awt.Color(0, 116, 158));
+        btnBuscarInformacion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnBuscarInformacion.setPreferredSize(new java.awt.Dimension(110, 34));
+        btnBuscarInformacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarInformacionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnBuscarInformacionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnBuscarInformacionMouseExited(evt);
+            }
+        });
 
         jLabel7.setBackground(new java.awt.Color(0, 116, 158));
         jLabel7.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Buscar");
+        jLabel7.setAlignmentY(0.0F);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addContainerGap())
+        javax.swing.GroupLayout btnBuscarInformacionLayout = new javax.swing.GroupLayout(btnBuscarInformacion);
+        btnBuscarInformacion.setLayout(btnBuscarInformacionLayout);
+        btnBuscarInformacionLayout.setHorizontalGroup(
+            btnBuscarInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnBuscarInformacionLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel7)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        btnBuscarInformacionLayout.setVerticalGroup(
+            btnBuscarInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnBuscarInformacionLayout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addGap(0, 2, Short.MAX_VALUE))
         );
 
-        bgContent.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 10, 100, 30));
+        bgContent.add(btnBuscarInformacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 100, 30));
+
+        coFiltroBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Persona", "Hashtag", "Tuit" }));
+        bgContent.add(coFiltroBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 120, 30));
 
         bg.add(bgContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 0, 660, -1));
 
@@ -546,11 +572,48 @@ public class GUIInicio extends javax.swing.JFrame {
         this.btnSeguirUsuario.setBackground(Color.decode("#00749E"));
     }//GEN-LAST:event_btnSeguirUsuarioMouseExited
 
+    private void btnBuscarInformacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarInformacionMouseClicked
+        buscarConFiltro(txtBuscador.getText());
+    }//GEN-LAST:event_btnBuscarInformacionMouseClicked
+
+    private void btnBuscarInformacionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarInformacionMouseEntered
+        this.btnBuscarInformacion.setBackground(Color.decode("#00b0f0"));
+    }//GEN-LAST:event_btnBuscarInformacionMouseEntered
+
+    private void btnBuscarInformacionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarInformacionMouseExited
+        this.btnBuscarInformacion.setBackground(Color.decode("#00749E"));
+    }//GEN-LAST:event_btnBuscarInformacionMouseExited
+    
+    //Opcional a implementar
+    public void autoCompletarBusqueda(){
+        //autoCompletar = new TextAutoCompleter(txtBuscador);
+        //autoCompletar.addItem("Capistran");        
+    }
+    
+    public void buscarConFiltro(String cadena){
+        
+        coFiltroBuscar.addItemListener( new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                
+                String filtro = coFiltroBuscar.getSelectedItem().toString();
+                
+                if(filtro.equalsIgnoreCase("Tuit")){
+                    
+                } else if(filtro.equalsIgnoreCase("Hashtag")){
+                
+                } else{
+
+                }
+            }
+        });
+    }
+    
     public void desocultarElementosPerfil(){
         this.contentPerfil.setVisible(true);
         this.fotoPerfil.setVisible(true);
     }
-    
+       
     public void ocultarElementosPerfil(){
         this.contentPerfil.setVisible(false);
         this.fotoPerfil.setVisible(false);
@@ -569,6 +632,26 @@ public class GUIInicio extends javax.swing.JFrame {
         }
     }
     
+        public void mostrarEntradas(ArrayList<Entrada> listaMostrar){
+        for(Entrada entradaMostrar:listaMostrar){
+                            
+                JLabel lbUsuarioTuit = new JLabel("Usuario: " + entradaMostrar.getNombreUsuario());
+                lbUsuarioTuit.setForeground(Color.white);
+                lbUsuarioTuit.setFont(new Font("SansSerif", Font.BOLD, 18));
+                
+                JPanel panelbajo = new JPanel();
+                panelbajo.setMaximumSize(new Dimension(600,30));
+                panelbajo.setLocation(600 - (500/2), 300 - (100/2));
+                panelbajo.setBackground(Color.blue);
+                
+                panelbajo.add(lbUsuarioTuit);
+                
+                content.add(panelbajo, new Integer(1));
+                content.add(Box.createRigidArea(new Dimension(15,15)));
+        }
+    }
+    
+    /*
     //Este método crea componentes dinámicos en donde iran los twitts
     public void mostrarEntradas(ArrayList<Entrada> listaMostrar){
         for(Entrada entradaMostrar:listaMostrar){
@@ -687,10 +770,13 @@ public class GUIInicio extends javax.swing.JFrame {
                 content.updateUI();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Ocurrio un error al cargar la información");
+                ex.printStackTrace();
+                System.out.println("Error: "+ ex.getMessage());
             }
         }
     }
     
+    */
     public void mostrarDatosUsuario(Usuario usuarioCargar){
         this.desocultarElementosPerfil();
         this.lbNombreUsuario.setText(usuarioCargar.getNombreUsuario());
@@ -700,6 +786,8 @@ public class GUIInicio extends javax.swing.JFrame {
         this.lbSeguidores.setText("Seguidores: "+usuarioCargar.getTotalSeguidores());
         this.txtDescripcionUsuario.setText(usuarioCargar.getDescripcionUsuario());
     }
+    
+    
     
     /**
      * @param args the command line arguments
@@ -739,12 +827,14 @@ public class GUIInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JPanel bgContent;
+    private javax.swing.JPanel btnBuscarInformacion;
     private javax.swing.JPanel btnCerrarSesion;
     private javax.swing.JPanel btnConfigurarPerfil;
     private javax.swing.JPanel btnInicio;
     private javax.swing.JPanel btnPerfil;
     private javax.swing.JPanel btnSeguirUsuario;
     private javax.swing.JPanel btnTuitear;
+    private javax.swing.JComboBox<String> coFiltroBuscar;
     private javax.swing.JPanel content;
     private javax.swing.JPanel contentPerfil;
     private javax.swing.JPanel fotoPerfil;
@@ -756,7 +846,6 @@ public class GUIInicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbEntradas;
