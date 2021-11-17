@@ -68,5 +68,17 @@ router.delete('/entrada_borrarlike/:idEntrada/:idUsuario', (req, res) =>{
   })
 })
 
+//registra una entrada
+router.post('/registrar_entrada', (req, res)=>{
+  var idUsuario = req.body.ent_idUsuario
+  var EntradaContenido = req.body.ent_textEntrada
+  console.log("hola", idUsuario)
+  console.log("hola", EntradaContenido)
+  pool.query('INSERT INTO entrada set ent_idUsuario = ?, ent_fechaEntrada = (select curdate()), ent_textEntrada = ?;', [idUsuario, EntradaContenido], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Registro exitoso")
+  })
+})
+
 
 module.exports = router;
