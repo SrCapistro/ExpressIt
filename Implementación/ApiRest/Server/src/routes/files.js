@@ -35,6 +35,18 @@ router.get("/media/profile_pictures/:idUsuario", (req, res)=>{
   })
 })
 
+//Obtener foto de perfil por nombreDeUsuario
+router.get("/media/pictures/:nombreUsuario", (req, res)=>{
+  pool.query("select a.arc_nombreArchivo from Archivo a where arc_idUsuario = (select u.usr_idUsuario from Usuario u where u.usr_nombreUsuario = ?);", [req.params.nombreUsuario], (err, rows) =>{
+    if (err) return res.send(err)
+    var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
+    res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
+    "/profile_pictures/"+nombreArchivo))
+  })
+})
+
+
+
 //Metodos para subir un archivo a un servidor, registra contenido multimedia a las entradas
 const storage = multer.diskStorage({
   destination: './media',
