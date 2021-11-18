@@ -78,5 +78,54 @@ router.post('/registrar_entrada', (req, res)=>{
   })
 })
 
+//obtener id de la última entrada registrada
+router.get('/obtenerId_ultimaEntrada', (req, res)=>{
+  pool.query('SELECT MAX(ent_idEntrada) as ent_idEntrada FROM entrada', (err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+    console.log("Hola: ", rows)
+  })
+})
+
+//obtener id del ultimo hashtag registrado
+router.get('/obtenerId_ultimoHashtag', (req, res)=>{
+  pool.query('SELECT MAX(htg_idHashtag) as idHashtag FROM hashtag', (err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+    console.log("Hola: ", rows)
+  })
+})
+
+//registrar HashTag
+router.post('/registrar_hashtag', (req, res)=>{
+  var hashtag = req.body.htg_nombre
+  console.log("hola", req.body)
+  pool.query('INSERT INTO hashtag set htg_nombre = ?;', [hashtag], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Registro exitoso")
+  })
+})
+
+//obtener los ID de los hashtag recién registrados
+router.get('/obtenerId_hashtags/:idHashtag', (req, res)=>{
+  pool.query('SELECT htg_idHashtag as idHashtag FROM hashtag WHERE htg_idHashtag > ?', [req.params.idHashtag], (err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+    console.log("Hola: ", rows)
+  })
+})
+
+//asociar hashtags con entrada
+router.post('/asociar_hashtags', (req, res)=>{
+  var idHashtag = req.body.eh_idHashtag
+  var idEntrada = req.body.eh_idEntrada
+  console.log("hola", req.body)
+  pool.query('INSERT INTO entradahashtag set eh_idHashtag = ?, eh_idEntrada = ?;', [idHashtag, idEntrada], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Registro exitoso")
+  })
+})
+
+
 
 module.exports = router;
