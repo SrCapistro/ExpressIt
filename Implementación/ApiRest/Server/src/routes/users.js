@@ -21,6 +21,40 @@ router.post('/signup', async (req, res) =>{
     res.send('Usuario registrado correctamente');
 })
 
+router.get('/',(req, res) =>{
+  res.send("Conxexión éxitosa")
+})
+
+
+//registrar nuevo usuario
+router.post('/registrar_nuevo_usuario', (req, res)=>{
+  var nombreUsuario = req.body.usr_nombreUsuario
+  var descripcion = req.body.usr_descripcion
+  var estatus = req.body.usr_estatus
+  var nombreCompleto = req.body.usr_nombre
+  var correo = req.body.usr_correo
+  var tipoUsuario = req.body.usr_tipoUsuario
+  var contra = req.body.usr_contraseña
+  var nacimiento = req.body.usr_fechaNacimiento
+
+  pool.query('INSERT INTO usuario set usr_nombreUsuario = ?, usr_descripcion = ?, usr_estatus = ?, usr_nombre = ?,'
+  + ' usr_correo = ?, usr_tipoUsuario = ?, usr_contraseña = ?, usr_fechaNacimiento = ?;',
+  [nombreUsuario, descripcion, estatus, nombreCompleto, correo, tipoUsuario, contra, nacimiento], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Registro exitoso")
+  })
+})
+
+
+//Metodo para saber si un nombre usuario ya se encuentra registrado
+router.get('/obtener_Usuarios/:nombreUsuario', (req, res) => {
+  var nombreUsuario = req.params.nombreUsuario
+  pool.query('SELECT usr_nombreUsuario FROM usuario WHERE usr_nombreUsuario = ?;', [nombreUsuario], (err, rows)=>{
+      if(err) return res.send(err);
+      res.json(rows);
+  })
+})
+
 router.get('/:nombreUsuario', async (req, res)=>{
   var nombreUsuario = req.params.nombreUsuario
   pool.query('select u.usr_idUsuario, u.usr_nombreUsuario, u.usr_descripcion, u.usr_nombre, u.usr_fechaNacimiento,' +
