@@ -6,21 +6,23 @@ const pool = require('../database');
 const router = express.Router();
 
 //Trae los twitts de los seguidores del usuario logeado
-router.get('/entradas_seguidores/:idUsuario', (req, res) => {
+router.get('/entradas_seguidores/:idUsuario/:idEntrada', (req, res) => {
     pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, s.sg_idSeguido, ' +
         '(SELECT COUNT(*) from MeGusta mg where mg.lk_idEntrada = e.ent_idEntrada) as likes_totales, ' +
         '(select lk_idUsuario from MeGusta mg2 where mg2.lk_idEntrada = e.ent_idEntrada and lk_idUsuario = ?) as tuLike, u.usr_nombreUsuario ' +
         'from Entrada e join Seguidor s on e.ent_idUsuario = s.sg_idSeguido and s.sg_idSeguidor = ?'+
-        'join Usuario u on u.usr_idUsuario = s.sg_idSeguido;' ,[req.params.idUsuario, req.params.idUsuario], (err, rows)=>{
+        'join Usuario u on u.usr_idUsuario = s.sg_idSeguido and e.ent_idEntrada < ? order by e.ent_idEntrada desc limit 6;' ,[req.params.idUsuario, req.params.idUsuario, req.params.idEntrada], (err, rows)=>{
         if(err) return res.send(err);
         res.json(rows);
     })
 })
 
 //Este metodo trae los twitts de un usuario en especial
-router.get('/entradas/:idUsuario', (req, res)=>{
-  pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, u.usr_nombreUsuario' +
-    ' from Entrada e join Usuario u on u.usr_idUsuario = e.ent_idUsuario and e.ent_idUsuario =?;', [req.params.idUsuario], (err,rows) =>{
+router.get('/entradas/:nombreUsuario/:idUsuario', (req, res)=>{
+  pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, u.usr_nombreUsuario, '+
+  '(SELECT COUNT(*) from MeGusta mg where mg.lk_idEntrada = e.ent_idEntrada) as likes_totales, ' +
+  '(select lk_idUsuario from MeGusta mg2 where mg2.lk_idEntrada = e.ent_idEntrada and lk_idUsuario = ?) as tuLike '+
+  'from Entrada e join Usuario u on u.usr_idUsuario = e.ent_idUsuario and u.usr_nombreUsuario = ? ORDER BY e.ent_fechaEntrada limit 6;', [req.params.idUsuario, req.params.nombreUsuario], (err,rows) =>{
     if(err) return res.send(err)
     res.json(rows)
   })
@@ -46,7 +48,7 @@ router.get('/entrada_hashtags/:idEntrada', (req,res)=>{
 
 //Verifica si un usuario ha dado like a una entrada
 router.get('/entrada_likeusuario/:idEntrada/:idUsuario', (req,res)=>{
-  pool.query('select * from MeGusta where lk_idEntrada = ? and lk_idUsuario = ?', [req.params.idEntrada, req.params.idUsuario], (err,rows) =>{
+  pool.query('select * from MeGusta where lk_idEntrada = ? and lk_idUsuario = ?;', [req.params.idEntrada, req.params.idUsuario], (err,rows) =>{
     if(err) return res.send(err)
     res.json(rows)
   })
@@ -54,7 +56,7 @@ router.get('/entrada_likeusuario/:idEntrada/:idUsuario', (req,res)=>{
 
 //Registra un like cuando un usuario le da like a una entrada
 router.post('/likear_entrada', (req, res)=>{
-  pool.query('insert into MeGusta set ?', [req.body], (err, rows) =>{
+  pool.query('insert into MeGusta set ?;', [req.body], (err, rows) =>{
     if(err) return res.send(err)
     res.send('Registro completado')
   })
@@ -72,9 +74,8 @@ router.delete('/entrada_borrarlike/:idEntrada/:idUsuario', (req, res) =>{
 router.post('/registrar_entrada', (req, res)=>{
   var idUsuario = req.body.ent_idUsuario
   var EntradaContenido = req.body.ent_textEntrada
-  console.log("hola", idUsuario)
   console.log("hola", EntradaContenido)
-  pool.query('INSERT INTO entrada set ent_idUsuario = ?, ent_fechaEntrada = (select curdate()), ent_textEntrada = ?;', [idUsuario, EntradaContenido], (err, rows)=>{
+  pool.query('INSERT INTO Entrada set ent_idUsuario = ?, ent_fechaEntrada = (select CURRENT_TIMESTAMP()), ent_textEntrada = ?;', [idUsuario, EntradaContenido], (err, rows)=>{
     if(err) return res.send(err.message)
     res.send("Registro exitoso")
   })
@@ -82,7 +83,7 @@ router.post('/registrar_entrada', (req, res)=>{
 
 //obtener id de la última entrada registrada
 router.get('/obtenerId_ultimaEntrada', (req, res)=>{
-  pool.query('SELECT MAX(ent_idEntrada) as ent_idEntrada FROM entrada', (err,rows)=>{
+  pool.query('SELECT MAX(ent_idEntrada) as ent_idEntrada FROM Entrada;', (err,rows)=>{
     if(err) return res.send(err)
     res.json(rows)
     console.log("Hola: ", rows)
@@ -91,7 +92,7 @@ router.get('/obtenerId_ultimaEntrada', (req, res)=>{
 
 //obtener id del ultimo hashtag registrado
 router.get('/obtenerId_ultimoHashtag', (req, res)=>{
-  pool.query('SELECT MAX(htg_idHashtag) as idHashtag FROM hashtag', (err,rows)=>{
+  pool.query('SELECT MAX(htg_idHashtag) as idHashtag FROM Hashtag;', (err,rows)=>{
     if(err) return res.send(err)
     res.json(rows)
     console.log("Hola: ", rows)
@@ -101,16 +102,16 @@ router.get('/obtenerId_ultimoHashtag', (req, res)=>{
 //registrar HashTag
 router.post('/registrar_hashtag', (req, res)=>{
   var hashtag = req.body.htg_nombre
-  console.log("hola", req.body)
-  pool.query('INSERT INTO hashtag set htg_nombre = ?;', [hashtag], (err, rows)=>{
-    if(err) return res.send(err.message)
+  console.log("HashTag:", hashtag)
+  pool.query('INSERT INTO Hashtag set htg_nombre = ?;', [hashtag], (err, rows)=>{
+    if(err) return console.log(err.message)
     res.send("Registro exitoso")
   })
 })
 
 //obtener los ID de los hashtag recién registrados
 router.get('/obtenerId_hashtags/:idHashtag', (req, res)=>{
-  pool.query('SELECT htg_idHashtag as idHashtag FROM hashtag WHERE htg_idHashtag > ?', [req.params.idHashtag], (err,rows)=>{
+  pool.query('SELECT htg_idHashtag as idHashtag FROM Hashtag WHERE htg_idHashtag > ?;', [req.params.idHashtag], (err,rows)=>{
     if(err) return res.send(err)
     res.json(rows)
     console.log("Hola: ", rows)
@@ -122,7 +123,7 @@ router.post('/asociar_hashtags', (req, res)=>{
   var idHashtag = req.body.eh_idHashtag
   var idEntrada = req.body.eh_idEntrada
   console.log("hola", req.body)
-  pool.query('INSERT INTO entradahashtag set eh_idHashtag = ?, eh_idEntrada = ?;', [idHashtag, idEntrada], (err, rows)=>{
+  pool.query('INSERT INTO Entradahashtag set eh_idHashtag = ?, eh_idEntrada = ?;', [idHashtag, idEntrada], (err, rows)=>{
     if(err) return res.send(err.message)
     res.send("Registro exitoso")
   })
