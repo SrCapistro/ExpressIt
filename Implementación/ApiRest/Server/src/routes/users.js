@@ -28,4 +28,35 @@ router.get('/:nombreUsuario', async (req, res)=>{
   })
 })
 
+//obtener el id del seguidor de un usuario especifico
+router.get('/obtener_seguidor/:idSeguido/:idSeguidor', (req, res)=>{
+  pool.query('SELECT sg_idSeguidor from Seguidor WHERE sg_idSeguido = ? and sg_idSeguidor =?;', [req.params.idSeguido, req.params.idSeguidor], (err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+    console.log("Hola: ", rows)
+    console.log("HSeguido: ", req.params.idSeguido)
+    console.log("Seguidor: ", req.params.idSeguidor)
+  })
+})
+
+//seguir
+router.post('/seguir', (req, res)=>{
+  var idSeguidor = req.body.sg_idSeguidor
+  var idSeguido = req.body.sg_idSeguido
+  console.log("hola", req.body)
+  pool.query('INSERT INTO Seguidor set sg_idSeguidor = ?, sg_idSeguido = ?;', [idSeguidor, idSeguido], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Registro exitoso")
+  })
+})
+
+//dejar de seguir
+router.delete('/dejar_seguir/:idSeguidor/:idSeguido', (req, res) =>{
+  pool.query('DELETE from Seguidor WHERE sg_idSeguidor = ? AND sg_idSeguido = ?;', [req.params.idSeguidor, req.params.idSeguido], (err,rows)=>{
+    if(err) return res.send(err)
+    res.send('Elemento borrado')
+    console.log("Seguidos", req.params)
+  })
+})
+
 module.exports = router;
