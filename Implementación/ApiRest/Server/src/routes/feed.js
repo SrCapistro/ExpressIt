@@ -128,6 +128,40 @@ router.post('/asociar_hashtags', (req, res)=>{
   })
 })
 
+//eliminar entrada
+router.delete('/borrarEntrada_moderador/:idEntrada', (req, res) =>{
+  pool.query('DELETE from Entrada WHERE ent_idEntrada = ?;', [req.params.idEntrada], (err,rows)=>{
+    if(err) return res.send(err)
+    res.send('Entrada eliminada borrado')
+    console.log("id entrada borrar:", req.params)
+  })
+})
 
+//obtener los ID de los hashtag asociados con la entrada eliminada
+router.get('/obtenerId_hashtags_entradaBorrada/:idEntrada', (req, res)=>{
+  pool.query('SELECT eh_idHashtag as idHashtag FROM EntradaHashtag WHERE eh_idEntrada = ?;', [req.params.idEntrada], (err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+    console.log("Hola id hashtags: ", rows)
+  })
+})
+
+//des asociar entradas con hashtags
+router.delete('/desAsociarEntrada_moderador/:idEntrada', (req, res) =>{
+  pool.query('DELETE from EntradaHashtag WHERE eh_idEntrada = ?;', [req.params.idEntrada], (err,rows)=>{
+    if(err) return res.send(err)
+    res.send('Entrada eliminada borrado')
+    console.log("id entrada desasociar:", req.params)
+  })
+})
+
+// borrar hashtags asociados con la entrada eliminada
+router.delete('/borrarHashtag_moderador/:idHashtag', (req, res) =>{
+  pool.query('DELETE from Hashtag WHERE htg_idHashtag = ?;', [req.params.idHashtag], (err,rows)=>{
+    if(err) return res.send(err)
+    res.send('hashtag borrado')
+    console.log("id hashtag a borrar:", req.params)
+  })
+})
 
 module.exports = router;
