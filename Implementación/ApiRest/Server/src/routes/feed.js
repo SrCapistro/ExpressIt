@@ -22,7 +22,7 @@ router.get('/entradas/:nombreUsuario/:idUsuario', (req, res)=>{
   pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, u.usr_nombreUsuario, '+
   '(SELECT COUNT(*) from MeGusta mg where mg.lk_idEntrada = e.ent_idEntrada) as likes_totales, ' +
   '(select lk_idUsuario from MeGusta mg2 where mg2.lk_idEntrada = e.ent_idEntrada and lk_idUsuario = ?) as tuLike '+
-  'from Entrada e join Usuario u on u.usr_idUsuario = e.ent_idUsuario and u.usr_nombreUsuario = ? ORDER BY e.ent_fechaEntrada limit 6;', [req.params.idUsuario, req.params.nombreUsuario], (err,rows) =>{
+  'from Entrada e join Usuario u on u.usr_idUsuario = e.ent_idUsuario and u.usr_nombreUsuario = ? ORDER BY e.ent_fechaEntrada asc limit 6;', [req.params.idUsuario, req.params.nombreUsuario], (err,rows) =>{
     if(err) return res.send(err)
     res.json(rows)
   })
@@ -129,6 +129,12 @@ router.post('/asociar_hashtags', (req, res)=>{
   })
 })
 
-
+router.get('/hashtags/:idEntrada', (req, res)=>{
+  pool.query('select h.htg_nombre from Hashtag h join EntradaHashtag eh '+
+  'on eh.eh_idHashtag = h.htg_idHashtag and eh.eh_idEntrada = ?;', [req.params.idEntrada], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.json(rows)
+  })
+})
 
 module.exports = router;

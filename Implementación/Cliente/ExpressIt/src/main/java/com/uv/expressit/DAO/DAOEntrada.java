@@ -27,10 +27,10 @@ import org.json.JSONObject;
  * @author josuecg
  */
 public class DAOEntrada {
-    public static ArrayList<Entrada> obtenerEntradasSeguidor(long idUsuario) throws MalformedURLException, IOException{
+    public static ArrayList<Entrada> obtenerEntradasSeguidor(long idUsuario, long idEntrada) throws MalformedURLException, IOException{
         ArrayList<Entrada> entradasSeguidos = new ArrayList<Entrada>();
         
-        URL urlService = new URL("http://localhost:4000/feed/entradas_seguidores/"+idUsuario);
+        URL urlService = new URL("http://localhost:4000/feed/entradas_seguidores/"+idUsuario+"/"+idEntrada);
         HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setDoOutput(true);
@@ -48,16 +48,26 @@ public class DAOEntrada {
             entradaObtenida.setFechaEntrada((String) json.getString("ent_fechaEntrada"));
             entradaObtenida.setTextoEntrada((String) json.get("ent_textEntrada"));
             entradaObtenida.setNombreUsuario((String) json.getString("usr_nombreUsuario"));
+            entradaObtenida.setFechaEntrada((String) json.getString("ent_fechaEntrada"));
+            entradaObtenida.setLikesEntrada((int) json.get("likes_totales"));
+            
+            try{
+                if(json.get("tuLike")!=null){
+                    entradaObtenida.setUsuarioLike(true);
+                }   
+            }catch(Exception ex){
+                entradaObtenida.setUsuarioLike(false);
+            }
             entradasSeguidos.add(entradaObtenida);
         }
         in.close();
         return entradasSeguidos;
     }
     
-    public static ArrayList<Entrada> obtenerEntradasUsuario(long idUsuario) throws IOException{
+    public static ArrayList<Entrada> obtenerEntradasUsuario(long idUsuario, String nombreUsuario) throws IOException{
          ArrayList<Entrada> entradasSeguidos = new ArrayList<Entrada>();
         
-        URL urlService = new URL("http://localhost:4000/feed/entradas/"+idUsuario);
+        URL urlService = new URL("http://localhost:4000/feed/entradas/"+nombreUsuario+"/"+idUsuario);
         HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setDoOutput(true);

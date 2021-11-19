@@ -34,9 +34,9 @@ public class DAOArchivo {
         return img;
     }
     
-    public static BufferedImage obtenerFotoPerfilUsuario(long idUsuario) throws MalformedURLException, IOException{
+    public static BufferedImage obtenerFotoPerfilUsuario(String nombreUsuario) throws MalformedURLException, IOException{
         BufferedImage img = null;
-        URL urlService = new URL("http://localhost:4000/files/media/profile_pictures/"+idUsuario);
+        URL urlService = new URL("http://localhost:4000/files/media/pictures/"+nombreUsuario);
         HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setDoOutput(true);

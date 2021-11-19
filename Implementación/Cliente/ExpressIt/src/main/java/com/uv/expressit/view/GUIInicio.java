@@ -4,7 +4,6 @@
  */
 package com.uv.expressit.view;
 
-import com.mxrck.autocompleter.TextAutoCompleter;
 import com.uv.expressit.DAO.DAOArchivo;
 import com.uv.expressit.DAO.DAOEntrada;
 import com.uv.expressit.DAO.DAOUsuario;
@@ -50,7 +49,7 @@ public class GUIInicio extends javax.swing.JFrame {
     private ArrayList<Entrada> listaEntradasSeguidos = null;
     private ArrayList<Entrada> listaUsuarios = null;
     int contador = 0;
-    private TextAutoCompleter autoCompletar;
+    //private TextAutoCompleter autoCompletar;
         
     /**
      * Creates new form GUIInicio
@@ -167,6 +166,11 @@ public class GUIInicio extends javax.swing.JFrame {
 
         btnPerfil.setBackground(new java.awt.Color(13, 13, 13));
         btnPerfil.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        btnPerfil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPerfilMouseClicked(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -193,6 +197,11 @@ public class GUIInicio extends javax.swing.JFrame {
 
         btnConfigurarPerfil.setBackground(new java.awt.Color(13, 13, 13));
         btnConfigurarPerfil.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        btnConfigurarPerfil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnConfigurarPerfilMouseClicked(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -562,6 +571,8 @@ public class GUIInicio extends javax.swing.JFrame {
         cargarEntradasSeguidos();
         ocultarElementosPerfil();
         this.btnInicio.setBackground(Color.BLACK);
+        this.btnPerfil.setBackground(Color.decode("#0D0D0D"));
+        this.btnConfigurarPerfil.setBackground(Color.decode("#0D0D0D"));
     }//GEN-LAST:event_btnInicioMouseClicked
 
     private void btnSeguirUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSeguirUsuarioMouseEntered
@@ -583,6 +594,32 @@ public class GUIInicio extends javax.swing.JFrame {
     private void btnBuscarInformacionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarInformacionMouseExited
         this.btnBuscarInformacion.setBackground(Color.decode("#00749E"));
     }//GEN-LAST:event_btnBuscarInformacionMouseExited
+
+    private void btnPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPerfilMouseClicked
+        try {
+            this.btnPerfil.setBackground(Color.BLACK);
+            this.btnInicio.setBackground(Color.decode("#0D0D0D"));
+            this.btnConfigurarPerfil.setBackground(Color.decode("#0D0D0D"));
+            this.desocultarElementosPerfil();
+            this.btnSeguirUsuario.setVisible(false);
+            mostrarDatosUsuario(GUIlogin.usuarioLogeado);
+            this.listaEntradasSeguidos.clear();
+            this.content.removeAll();
+            ArrayList<Entrada> entradasPersonales = DAOEntrada.obtenerEntradasUsuario(GUIlogin.usuarioLogeado.getIdUsuario(), GUIlogin.usuarioLogeado.getNombreUsuario());
+            this.mostrarEntradas(entradasPersonales);
+            this.cargarFotoPerfil(GUIlogin.usuarioLogeado.getNombreUsuario());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al cargar la información del perfil", "Error", ERROR);
+        }
+    }//GEN-LAST:event_btnPerfilMouseClicked
+
+    private void btnConfigurarPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfigurarPerfilMouseClicked
+        this.btnConfigurarPerfil.setBackground(Color.black);
+        this.btnInicio.setBackground(Color.decode("#0D0D0D"));
+        this.btnPerfil.setBackground(Color.decode("#0D0D0D"));
+        GUIRegistraModificarUsuario modificarUsuario = new GUIRegistraModificarUsuario(false);
+        modificarUsuario.setVisible(true);
+    }//GEN-LAST:event_btnConfigurarPerfilMouseClicked
     
     //Opcional a implementar
     public void autoCompletarBusqueda(){
@@ -619,20 +656,31 @@ public class GUIInicio extends javax.swing.JFrame {
         this.fotoPerfil.setVisible(false);
     }
     
+    public void cargarFotoPerfil(String nombreUsuario){
+        try {
+            BufferedImage imageMostrar = DAOArchivo.obtenerFotoPerfilUsuario(nombreUsuario);
+            Image imagenNueva = imageMostrar.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            lbFotoPerfil.setIcon(new ImageIcon(imagenNueva));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this,"Ha ocurrido un error al cargar la foto", "Error", ERROR);
+        }
+    }
+    
     public void cargarEntradasSeguidos(){
         if(this.listaEntradasSeguidos != null){
             this.listaEntradasSeguidos.clear();
             this.content.removeAll();
         }
         try {
-           this.listaEntradasSeguidos = DAOEntrada.obtenerEntradasSeguidor(GUIlogin.usuarioLogeado.getIdUsuario());
+           this.listaEntradasSeguidos = DAOEntrada.obtenerEntradasSeguidor(GUIlogin.usuarioLogeado.getIdUsuario(), 100000);
            mostrarEntradas(listaEntradasSeguidos);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Ha ocurrido un error al cargar el feed, \ninténtelo de nuevo más tarde");
         }
     }
     
-        public void mostrarEntradas(ArrayList<Entrada> listaMostrar){
+  /*
+    public void mostrarEntradas(ArrayList<Entrada> listaMostrar){
         for(Entrada entradaMostrar:listaMostrar){
                             
                 JLabel lbUsuarioTuit = new JLabel("Usuario: " + entradaMostrar.getNombreUsuario());
@@ -649,9 +697,9 @@ public class GUIInicio extends javax.swing.JFrame {
                 content.add(panelbajo, new Integer(1));
                 content.add(Box.createRigidArea(new Dimension(15,15)));
         }
-    }
+    }*/
     
-    /*
+    
     //Este método crea componentes dinámicos en donde iran los twitts
     public void mostrarEntradas(ArrayList<Entrada> listaMostrar){
         for(Entrada entradaMostrar:listaMostrar){
@@ -730,15 +778,16 @@ public class GUIInicio extends javax.swing.JFrame {
                         try {
                             Usuario usuarioObtenido = DAOUsuario.obtenerUsuarioPorUsername(entradaMostrar.getNombreUsuario());
                             mostrarDatosUsuario(usuarioObtenido);
-                            ArrayList<Entrada> listaEntradasUsuario = DAOEntrada.obtenerEntradasUsuario(usuarioObtenido.getIdUsuario());
+                            ArrayList<Entrada> listaEntradasUsuario = DAOEntrada.obtenerEntradasUsuario(usuarioObtenido.getIdUsuario(), usuarioObtenido.getNombreUsuario());
                             listaEntradasSeguidos.clear();
                             content.removeAll();
                             btnInicio.setBackground(Color.decode("#0D0D0D"));
-                            BufferedImage imageMostrar = DAOArchivo.obtenerFotoPerfilUsuario(usuarioObtenido.getIdUsuario());
+                            BufferedImage imageMostrar = DAOArchivo.obtenerFotoPerfilUsuario(usuarioObtenido.getNombreUsuario());
                             Image imagenNueva = imageMostrar.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
                             lbFotoPerfil.setIcon(new ImageIcon(imagenNueva));
                             mostrarEntradas(listaEntradasUsuario);
                         } catch (IOException ex) {
+                            ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, "Ocurrio un error al mostrar los datos");
                         }
                     }
@@ -776,7 +825,7 @@ public class GUIInicio extends javax.swing.JFrame {
         }
     }
     
-    */
+    
     public void mostrarDatosUsuario(Usuario usuarioCargar){
         this.desocultarElementosPerfil();
         this.lbNombreUsuario.setText(usuarioCargar.getNombreUsuario());

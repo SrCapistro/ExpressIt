@@ -6,15 +6,19 @@ const router = express.Router();
 
 //Metodo prueba de registro de usuario
 router.post('/signup', async (req, res) =>{
-    const { usr_nombreUsuario, usr_contraseña, usr_nombre, usr_estatus} = req.body;
+    const { usr_nombreUsuario, usr_contraseña, usr_nombre, usr_correo, usr_fechaNacimiento, usr_descripcion, usr_estatus, usr_tipoUsuario} = req.body;
     const nuevoUsuario = {
         usr_nombreUsuario ,
         usr_contraseña,
         usr_nombre,
-        usr_estatus
+        usr_correo,
+        usr_fechaNacimiento,
+        usr_descripcion,
+        usr_estatus,
+        usr_tipoUsuario
     };
     await pool.query('INSERT INTO Usuario set ?', [nuevoUsuario]);
-    res.send('Recibido');
+    res.send('Usuario registrado correctamente');
 })
 
 router.get('/:nombreUsuario', async (req, res)=>{

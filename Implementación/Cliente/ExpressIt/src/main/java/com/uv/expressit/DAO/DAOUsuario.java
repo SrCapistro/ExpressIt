@@ -51,7 +51,7 @@ public class DAOUsuario {
             
             //PASAMOS LOS DATOS DEL JSON A EL USUARIO O EL OBJETO EN CUESTIÓN
             usuarioObtenido = new Usuario();
-            usuarioObtenido.setIdUsuario(jsonObtenido.getInt("usr_idUsuario"));
+            usuarioObtenido.setIdUsuario((Integer) jsonObtenido.get("usr_idUsuario"));
             usuarioObtenido.setNombreUsuario(jsonObtenido.getString("usr_nombreUsuario"));
             usuarioObtenido.setDescripcionUsuario((String) jsonObtenido.get("usr_descripcion").toString());
             usuarioObtenido.setNombreCompletoUsuario(jsonObtenido.getString("usr_nombre"));
@@ -67,6 +67,35 @@ public class DAOUsuario {
             in.close();
         
         return usuarioObtenido;
+    }
+    
+    public static String registrarUsuario(Usuario usuario) throws IOException{
+        String credencialesJson = String.format(
+                "{\"usr_nombreUsuario\": \"%s\","
+                        + "\"usr_contraseña\": \"%s\","
+                        + "\"usr_nombre\": \"%s\","
+                        + "\"usr_correo\": \"%s\","
+                        + "\"usr_fechaNacimiento\": \"%s\","
+                        + "\"usr_descripcion\": \"%s\","
+                        + "\"usr_status\": \"Activo\","
+                        + "\"usr_tipoUsuario\": \"Comun\"}", usuario.getNombreUsuario(),
+                        usuario.getContraseñaUsuario(), usuario.getNombreCompletoUsuario(),
+                        usuario.getCorreoUsuario(), usuario.getFechaNacUsuario(), usuario.getDescripcionUsuario());
+        
+        URL urlService = new URL("http://localhost:4000/auth/signup");
+        HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
+        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setRequestMethod("POST");
+        
+        OutputStream os = conn.getOutputStream();
+        os.write(credencialesJson.getBytes("UTF-8"));
+        
+        InputStream in = new BufferedInputStream(conn.getInputStream());  
+        String mensaje = IOUtils.toString(in, "UTF-8");
+        
+        return mensaje;
     }
     
     public static Usuario obtenerUsuarioPorUsername(String nombreUsuario) throws IOException{

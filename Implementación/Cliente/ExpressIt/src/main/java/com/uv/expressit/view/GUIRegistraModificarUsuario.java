@@ -4,7 +4,15 @@
  */
 package com.uv.expressit.view;
 
+import com.uv.expressit.DAO.DAOUsuario;
+import com.uv.expressit.POJO.Usuario;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,16 +28,28 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
     
     public GUIRegistraModificarUsuario(boolean esNuevo) {
         initComponents();
+        this.setTitle("Ingresar datos");
         //Se comprueba si el usuario sera nuevo o uno ya existente
+        
+        Usuario usuario = GUIlogin.usuarioLogeado;
+        
         this.esNuevo = esNuevo;
         
         if(esNuevo){
-            lbTituloVentana.setText("Registro de Usuario");
+           
         }
         else{
-            lbTituloVentana.setText("Modificacion de Usuario");
+           cargarDatosUsuario(usuario);
         }
         
+    }
+    
+    public void cargarDatosUsuario(Usuario usuario){
+        this.txtNombreUsuario.setText(usuario.getNombreUsuario());
+        this.txtNombreCompleto.setText(usuario.getNombreCompletoUsuario());
+        this.txtFechaNacimiento.setText(usuario.getFechaNacUsuario());
+        this.txtCorreoElectronico.setText(usuario.getCorreoUsuario());
+        this.txtDescripcion.setText(usuario.getDescripcionUsuario());
     }
 
     /**
@@ -41,226 +61,301 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bg = new javax.swing.JPanel();
+        txtNombreUsuario = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        tfNombre = new javax.swing.JTextField();
-        ftfFechaNacimiento = new javax.swing.JFormattedTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        taDescripcion = new javax.swing.JTextArea();
-        tfCorreo = new javax.swing.JTextField();
-        tfUsuario = new javax.swing.JTextField();
-        tfContrasena = new javax.swing.JTextField();
-        lbTituloVentana = new javax.swing.JLabel();
-        btnRegistraUsuario = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtNombreCompleto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        btnCancelarRegistroUsuario = new javax.swing.JPanel();
+        txtCorreoElectronico = new javax.swing.JTextField();
+        txtFechaNacimiento = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JPasswordField();
+        jLabel7 = new javax.swing.JLabel();
+        txtConfirmPassword = new javax.swing.JPasswordField();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
+        btnCambiarFoto = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        btnGuardarModificacion = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel1.setText("Nombre: ");
+        bg.setBackground(new java.awt.Color(13, 13, 13));
 
-        jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel8.setText("Descripción: ");
+        txtNombreUsuario.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel10.setText("Correo: ");
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Nombre de usuario");
 
-        jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel11.setText("Contraseña: ");
+        jLabel2.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("@");
 
-        jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel12.setText("Fecha de Nacimiento: ");
+        jLabel3.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Nombre completo");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel2.setText("Usurio: ");
+        txtNombreCompleto.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
 
-        taDescripcion.setColumns(20);
-        taDescripcion.setRows(5);
-        jScrollPane1.setViewportView(taDescripcion);
-
-        lbTituloVentana.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        lbTituloVentana.setText("***");
-
-        btnRegistraUsuario.setBackground(new java.awt.Color(0, 102, 255));
-        btnRegistraUsuario.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnRegistraUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegistraUsuario(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnRegistraUsuarioMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnRegistraUsuarioMouseExited(evt);
-            }
-        });
-
+        jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Registra");
+        jLabel4.setText("Correo electrónico");
 
-        javax.swing.GroupLayout btnRegistraUsuarioLayout = new javax.swing.GroupLayout(btnRegistraUsuario);
-        btnRegistraUsuario.setLayout(btnRegistraUsuarioLayout);
-        btnRegistraUsuarioLayout.setHorizontalGroup(
-            btnRegistraUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnRegistraUsuarioLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel4)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-        btnRegistraUsuarioLayout.setVerticalGroup(
-            btnRegistraUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnRegistraUsuarioLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addContainerGap())
-        );
+        txtCorreoElectronico.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
 
-        btnCancelarRegistroUsuario.setBackground(new java.awt.Color(255, 0, 0));
-        btnCancelarRegistroUsuario.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnCancelarRegistroUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnCancelarRegistroUsuario(evt);
+        txtFechaNacimiento.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        txtFechaNacimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFechaNacimientoKeyPressed(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnCancelarRegistroUsuarioMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnCancelarRegistroUsuarioMouseExited(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFechaNacimientoKeyTyped(evt);
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Cancelar");
+        jLabel5.setText("Fecha de nacimiento");
 
-        javax.swing.GroupLayout btnCancelarRegistroUsuarioLayout = new javax.swing.GroupLayout(btnCancelarRegistroUsuario);
-        btnCancelarRegistroUsuario.setLayout(btnCancelarRegistroUsuarioLayout);
-        btnCancelarRegistroUsuarioLayout.setHorizontalGroup(
-            btnCancelarRegistroUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnCancelarRegistroUsuarioLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel5)
-                .addContainerGap(20, Short.MAX_VALUE))
+        jLabel6.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Contraseña");
+
+        txtPassword.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Repetir contraseña");
+
+        txtConfirmPassword.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Descripción");
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        txtDescripcion.setLineWrap(true);
+        txtDescripcion.setRows(5);
+        jScrollPane1.setViewportView(txtDescripcion);
+
+        btnCambiarFoto.setBackground(new java.awt.Color(0, 116, 158));
+        btnCambiarFoto.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel11.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Cambiar foto");
+
+        javax.swing.GroupLayout btnCambiarFotoLayout = new javax.swing.GroupLayout(btnCambiarFoto);
+        btnCambiarFoto.setLayout(btnCambiarFotoLayout);
+        btnCambiarFotoLayout.setHorizontalGroup(
+            btnCambiarFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
         );
-        btnCancelarRegistroUsuarioLayout.setVerticalGroup(
-            btnCancelarRegistroUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnCancelarRegistroUsuarioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        btnCambiarFotoLayout.setVerticalGroup(
+            btnCambiarFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+        );
+
+        btnGuardarModificacion.setBackground(new java.awt.Color(0, 116, 158));
+        btnGuardarModificacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarModificacionMouseClicked(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Guardar");
+
+        javax.swing.GroupLayout btnGuardarModificacionLayout = new javax.swing.GroupLayout(btnGuardarModificacion);
+        btnGuardarModificacion.setLayout(btnGuardarModificacionLayout);
+        btnGuardarModificacionLayout.setHorizontalGroup(
+            btnGuardarModificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+        );
+        btnGuardarModificacionLayout.setVerticalGroup(
+            btnGuardarModificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        btnCancelar.setBackground(new java.awt.Color(120, 0, 14));
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCancelarMouseClicked(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("Cancelar");
+
+        javax.swing.GroupLayout btnCancelarLayout = new javax.swing.GroupLayout(btnCancelar);
+        btnCancelar.setLayout(btnCancelarLayout);
+        btnCancelarLayout.setHorizontalGroup(
+            btnCancelarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+        );
+        btnCancelarLayout.setVerticalGroup(
+            btnCancelarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
+        bg.setLayout(bgLayout);
+        bgLayout.setHorizontalGroup(
+            bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bgLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1)
+                        .addComponent(jLabel8)
+                        .addGroup(bgLayout.createSequentialGroup()
+                            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addComponent(txtNombreCompleto)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel1)
+                                .addComponent(txtNombreUsuario))
+                            .addGap(42, 42, 42)
+                            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtConfirmPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                                .addComponent(txtPassword)
+                                .addComponent(txtFechaNacimiento)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7))))
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCambiarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(343, 343, 343)
+                        .addComponent(btnGuardarModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+        bgLayout.setVerticalGroup(
+            bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bgLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtPassword)
+                    .addComponent(txtNombreCompleto, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCambiarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGuardarModificacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnRegistraUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancelarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel11))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tfContrasena)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                                    .addComponent(tfCorreo)
-                                    .addComponent(tfUsuario)
-                                    .addComponent(ftfFechaNacimiento, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(lbTituloVentana)))
-                .addContainerGap(36, Short.MAX_VALUE))
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lbTituloVentana)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(ftfFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(tfCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(tfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(tfContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCancelarRegistroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRegistraUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(34, 34, 34))
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRegistraUsuario(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistraUsuario
-        
-        //Despues de que se registre que lo retorne al login
-        
-        GUIlogin login = new GUIlogin();
-        login.setVisible(true);
+    private void btnGuardarModificacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarModificacionMouseClicked
+       if(comprobarDatos() == 1){
+           JOptionPane.showMessageDialog(this, "Debe ingresar todos los datos para registrarse", "Datos faltantes", JOptionPane.INFORMATION_MESSAGE);
+       }
+       else{
+           try {
+               Usuario usuarioRegistrar = new Usuario();
+               usuarioRegistrar.setNombreUsuario(this.txtNombreUsuario.getText());
+               usuarioRegistrar.setNombreCompletoUsuario(this.txtNombreCompleto.getText());
+               usuarioRegistrar.setCorreoUsuario(this.txtCorreoElectronico.getText());
+               usuarioRegistrar.setDescripcionUsuario(this.txtDescripcion.getText());
+               usuarioRegistrar.setContraseñaUsuario(this.txtPassword.getPassword().toString());
+               usuarioRegistrar.setFechaNacUsuario(this.txtFechaNacimiento.getText());
+               String mensaje = DAOUsuario.registrarUsuario(usuarioRegistrar);
+               JOptionPane.showMessageDialog(this, mensaje, "Registro", JOptionPane.INFORMATION_MESSAGE);
+           } catch (IOException ex) {
+               JOptionPane.showMessageDialog(this, "Error de registro"+ex.getMessage(), "Registro", JOptionPane.INFORMATION_MESSAGE);
+           }
+       }
+    }//GEN-LAST:event_btnGuardarModificacionMouseClicked
+
+    private void btnCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseClicked
         this.dispose();
-    }//GEN-LAST:event_btnRegistraUsuario
+    }//GEN-LAST:event_btnCancelarMouseClicked
 
-    private void btnCancelarRegistroUsuario(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarRegistroUsuario
-        GUIlogin login = new GUIlogin();
-        login.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCancelarRegistroUsuario
+    private void txtFechaNacimientoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaNacimientoKeyPressed
+       if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            this.txtFechaNacimiento.setEditable(true);
+        }
+       if(evt.getKeyCode() >= 48 && evt.getKeyCode()<=57){
+           this.txtFechaNacimiento.setEditable(true);
+       }
+    }//GEN-LAST:event_txtFechaNacimientoKeyPressed
 
-    private void btnCancelarRegistroUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarRegistroUsuarioMouseEntered
-        this.btnCancelarRegistroUsuario.setBackground(Color.decode("#FF6666"));
-    }//GEN-LAST:event_btnCancelarRegistroUsuarioMouseEntered
+    private void txtFechaNacimientoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaNacimientoKeyTyped
+       String fecha = this.txtFechaNacimiento.getText();
+       if(fecha.length() == 4){
+           this.txtFechaNacimiento.setText(fecha+"/");
+       }else if(fecha.length() == 7){
+           this.txtFechaNacimiento.setText(fecha+"/");
+       }else if(fecha.length() == 10){
+           this.txtFechaNacimiento.setEditable(false);
+       }
+    }//GEN-LAST:event_txtFechaNacimientoKeyTyped
 
-    private void btnRegistraUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistraUsuarioMouseEntered
-        this.btnRegistraUsuario.setBackground(Color.decode("#3399FF"));
-    }//GEN-LAST:event_btnRegistraUsuarioMouseEntered
-
-    private void btnRegistraUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistraUsuarioMouseExited
-        this.btnRegistraUsuario.setBackground(Color.decode("#0066FF"));
-    }//GEN-LAST:event_btnRegistraUsuarioMouseExited
-
-    private void btnCancelarRegistroUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarRegistroUsuarioMouseExited
-        this.btnCancelarRegistroUsuario.setBackground(Color.decode("#FF0000"));
-    }//GEN-LAST:event_btnCancelarRegistroUsuarioMouseExited
-
+    public int comprobarDatos(){
+        if(this.txtNombreUsuario.getText().isBlank() || this.txtNombreCompleto.getText().isBlank() ||
+                this.txtCorreoElectronico.getText().isBlank() || this.txtFechaNacimiento.getText().isBlank() ||
+                this.txtPassword.getPassword().toString().isBlank()){
+            return 1;
+        }
+        return 0;
+    }
     /**
      * @param args the command line arguments
      */
@@ -297,23 +392,28 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel btnCancelarRegistroUsuario;
-    private javax.swing.JPanel btnRegistraUsuario;
-    private javax.swing.JFormattedTextField ftfFechaNacimiento;
+    private javax.swing.JPanel bg;
+    private javax.swing.JPanel btnCambiarFoto;
+    private javax.swing.JPanel btnCancelar;
+    private javax.swing.JPanel btnGuardarModificacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbTituloVentana;
-    private javax.swing.JTextArea taDescripcion;
-    private javax.swing.JTextField tfContrasena;
-    private javax.swing.JTextField tfCorreo;
-    private javax.swing.JTextField tfNombre;
-    private javax.swing.JTextField tfUsuario;
+    private javax.swing.JPasswordField txtConfirmPassword;
+    private javax.swing.JTextField txtCorreoElectronico;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtFechaNacimiento;
+    private javax.swing.JTextField txtNombreCompleto;
+    private javax.swing.JTextField txtNombreUsuario;
+    private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 }
