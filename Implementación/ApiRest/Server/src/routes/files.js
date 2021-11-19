@@ -39,9 +39,14 @@ router.get("/media/profile_pictures/:idUsuario", (req, res)=>{
 router.get("/media/pictures/:nombreUsuario", (req, res)=>{
   pool.query("select a.arc_nombreArchivo from Archivo a where arc_idUsuario = (select u.usr_idUsuario from Usuario u where u.usr_nombreUsuario = ?);", [req.params.nombreUsuario], (err, rows) =>{
     if (err) return res.send(err)
-    var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
-    res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
-    "/profile_pictures/"+nombreArchivo))
+    try{
+      var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
+      res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
+      "/profile_pictures/"+nombreArchivo))
+    }catch(error){
+      res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
+      "/profile_pictures/default_foto.jpg"))
+    }
   })
 })
 
@@ -71,12 +76,10 @@ router.get('/media/:idEntrada', (req, res)=>{
   pool.query("select arc_nombreArchivo from Archivo where arc_idEntrada = ?",[req.params.idEntrada], (err, rows) =>{
     if (err) return res.send(err)
     var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
-    res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
-    "/media/"+nombreArchivo))
+      res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
+        "/media/"+nombreArchivo))
   })
 })
-
-
 
 
 module.exports = router;
