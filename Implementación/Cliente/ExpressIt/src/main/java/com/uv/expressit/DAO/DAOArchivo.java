@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
  */
 public class DAOArchivo {
     public static BufferedImage obtenerFotoEntrada(long idEntrada) throws IOException{
-        URL urlService = new URL("http://localhost:4000/files/media/"+1);
+        URL urlService = new URL("http://localhost:4000/files/media/"+idEntrada);
         HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setDoOutput(true);
@@ -29,7 +29,6 @@ public class DAOArchivo {
         
         BufferedInputStream in = new BufferedInputStream(urlService.openStream());
         BufferedImage img = ImageIO.read(in);
-        
         
         return img;
     }

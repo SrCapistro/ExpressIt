@@ -77,12 +77,12 @@ public class DAOUsuario {
                         + "\"usr_correo\": \"%s\","
                         + "\"usr_fechaNacimiento\": \"%s\","
                         + "\"usr_descripcion\": \"%s\","
-                        + "\"usr_status\": \"Activo\","
+                        + "\"usr_estatus\": 1,"
                         + "\"usr_tipoUsuario\": \"Comun\"}", usuario.getNombreUsuario(),
                         usuario.getContraseñaUsuario(), usuario.getNombreCompletoUsuario(),
                         usuario.getCorreoUsuario(), usuario.getFechaNacUsuario(), usuario.getDescripcionUsuario());
         
-        URL urlService = new URL("http://localhost:4000/auth/signup");
+        URL urlService = new URL("http://localhost:4000/users/signup");
         HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setDoOutput(true);

@@ -6,6 +6,7 @@ package com.uv.expressit.DAO;
 
 import static com.uv.expressit.JSONUtils.JsonUtils.parsearJson;
 import com.uv.expressit.POJO.Entrada;
+import com.uv.expressit.POJO.Hashtag;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,9 +65,40 @@ public class DAOEntrada {
         return entradasSeguidos;
     }
     
+    public static Hashtag obtenerHashtag(String nombreHashtag){
+        Hashtag hashtag = null;
+        try{
+            String jsonEnviar = String.format(
+                    "{\"htg_nombre\": \"%s\"}", nombreHashtag
+            );
+            
+            URL url = new URL("http://localhost:4000/feed/hashtag/");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("POST");
+            
+            OutputStream os = conn.getOutputStream(); 
+            os.write(jsonEnviar.getBytes("UTF-8"));
+            
+            InputStream in = new BufferedInputStream(conn.getInputStream());
+            String hashtagRecibido = IOUtils.toString(in, "UTF-8");
+            
+            JSONObject jsonObtenido = new JSONObject(parsearJson(hashtagRecibido));
+            hashtag = new Hashtag();
+            hashtag.setIdHashtag((Long)jsonObtenido.get("htg_idHashtag"));
+            hashtag.setTextoHashtag((String) jsonObtenido.get("htg_nombre"));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return hashtag;
+    }
+    
     public static ArrayList<Entrada> obtenerEntradasUsuario(long idUsuario, String nombreUsuario) throws IOException{
          ArrayList<Entrada> entradasSeguidos = new ArrayList<Entrada>();
         
+         
         URL urlService = new URL("http://localhost:4000/feed/entradas/"+nombreUsuario+"/"+idUsuario);
         HttpURLConnection conn = (HttpURLConnection) urlService.openConnection();
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");

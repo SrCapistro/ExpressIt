@@ -67,7 +67,7 @@ const upload = multer({
   storage: storage
 })
 
-router.get("/media/entradas/:idEntrada", upload.single('archivo'),(req, res)=>{
+router.post("/media/entradas/:idEntrada", upload.single('archivo'),(req, res)=>{
   res.send("Listo")
 })
 
@@ -75,9 +75,13 @@ router.get("/media/entradas/:idEntrada", upload.single('archivo'),(req, res)=>{
 router.get('/media/:idEntrada', (req, res)=>{
   pool.query("select arc_nombreArchivo from Archivo where arc_idEntrada = ?",[req.params.idEntrada], (err, rows) =>{
     if (err) return res.send(err)
+  try{
     var nombreArchivo = JSON.parse(JSON.stringify(rows[0]))["arc_nombreArchivo"]
       res.sendFile(path.join("/home/josuecg/Documentos/Desarrollo red/ProyectoFinal/ExpressIt/Implementación/ApiRest/Server",
         "/media/"+nombreArchivo))
+  }catch(error){
+    res.send(error)
+  }
   })
 })
 

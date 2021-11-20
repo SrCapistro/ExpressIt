@@ -8,11 +8,14 @@ import com.uv.expressit.DAO.DAOUsuario;
 import com.uv.expressit.POJO.Usuario;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -36,10 +39,11 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
         this.esNuevo = esNuevo;
         
         if(esNuevo){
-           
+            this.btnCambiarFoto.setVisible(false);
         }
         else{
            cargarDatosUsuario(usuario);
+          
         }
         
     }
@@ -84,6 +88,7 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
+        lbNombreArchivo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,6 +154,11 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
 
         btnCambiarFoto.setBackground(new java.awt.Color(0, 116, 158));
         btnCambiarFoto.setForeground(new java.awt.Color(255, 255, 255));
+        btnCambiarFoto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCambiarFotoMouseClicked(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -212,6 +222,9 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
         );
 
+        lbNombreArchivo.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        lbNombreArchivo.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
@@ -220,32 +233,33 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
-                        .addComponent(jLabel8)
-                        .addGroup(bgLayout.createSequentialGroup()
-                            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
-                                .addComponent(txtNombreCompleto)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel1)
-                                .addComponent(txtNombreUsuario))
-                            .addGap(42, 42, 42)
-                            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtConfirmPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                                .addComponent(txtPassword)
-                                .addComponent(txtFechaNacimiento)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel7))))
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bgLayout.createSequentialGroup()
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtNombreCompleto)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(txtNombreUsuario))
+                        .addGap(42, 42, 42)
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtConfirmPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                            .addComponent(txtPassword)
+                            .addComponent(txtFechaNacimiento)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)))
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCambiarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(343, 343, 343)
-                        .addComponent(btnGuardarModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnGuardarModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bgLayout.createSequentialGroup()
+                        .addComponent(btnCambiarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbNombreArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
@@ -281,7 +295,9 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnCambiarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbNombreArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCambiarFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -308,18 +324,26 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
            JOptionPane.showMessageDialog(this, "Debe ingresar todos los datos para registrarse", "Datos faltantes", JOptionPane.INFORMATION_MESSAGE);
        }
        else{
-           try {
-               Usuario usuarioRegistrar = new Usuario();
-               usuarioRegistrar.setNombreUsuario(this.txtNombreUsuario.getText());
-               usuarioRegistrar.setNombreCompletoUsuario(this.txtNombreCompleto.getText());
-               usuarioRegistrar.setCorreoUsuario(this.txtCorreoElectronico.getText());
-               usuarioRegistrar.setDescripcionUsuario(this.txtDescripcion.getText());
-               usuarioRegistrar.setContraseñaUsuario(this.txtPassword.getPassword().toString());
-               usuarioRegistrar.setFechaNacUsuario(this.txtFechaNacimiento.getText());
-               String mensaje = DAOUsuario.registrarUsuario(usuarioRegistrar);
-               JOptionPane.showMessageDialog(this, mensaje, "Registro", JOptionPane.INFORMATION_MESSAGE);
-           } catch (IOException ex) {
-               JOptionPane.showMessageDialog(this, "Error de registro"+ex.getMessage(), "Registro", JOptionPane.INFORMATION_MESSAGE);
+           if(this.txtCorreoElectronico.getText().contains("@")){
+               if(this.txtFechaNacimiento.getText().length() == 10){
+                   try {
+                    Usuario usuarioRegistrar = new Usuario();
+                    usuarioRegistrar.setNombreUsuario(this.txtNombreUsuario.getText());
+                    usuarioRegistrar.setNombreCompletoUsuario(this.txtNombreCompleto.getText());
+                    usuarioRegistrar.setCorreoUsuario(this.txtCorreoElectronico.getText());
+                    usuarioRegistrar.setDescripcionUsuario(this.txtDescripcion.getText());
+                    usuarioRegistrar.setContraseñaUsuario(this.txtPassword.getPassword().toString());
+                    usuarioRegistrar.setFechaNacUsuario(this.txtFechaNacimiento.getText());
+                    String mensaje = DAOUsuario.registrarUsuario(usuarioRegistrar);
+                    JOptionPane.showMessageDialog(this, mensaje, "Registro", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error de registro"+ex.getMessage(), "Registro", JOptionPane.INFORMATION_MESSAGE);
+                }
+               }else{
+                   JOptionPane.showMessageDialog(this, "Formato de fecha incórrecto", "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
+               }
+           }else{
+               JOptionPane.showMessageDialog(this, "Formato de correo electrónico inavlido", "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
            }
        }
     }//GEN-LAST:event_btnGuardarModificacionMouseClicked
@@ -347,6 +371,26 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
            this.txtFechaNacimiento.setEditable(false);
        }
     }//GEN-LAST:event_txtFechaNacimientoKeyTyped
+
+    private void btnCambiarFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCambiarFotoMouseClicked
+       GUICargarArchivo Buscador = new GUICargarArchivo();  
+        FileNameExtensionFilter format = new FileNameExtensionFilter("JPG, PNG, GIF, MP4, AVI, MKV, FLV, MOV", 
+                                                            "jpg", "jpeg", "png", "gif", "mp4", "avi", "mkv", "flv", "mov");
+        File archivo;
+        int resultado;
+               
+        Buscador.fcBuscador.setFileFilter(format);    
+        resultado = Buscador.fcBuscador.showOpenDialog(null);
+        
+        if(JFileChooser.APPROVE_OPTION == resultado){
+            
+            archivo = Buscador.fcBuscador.getSelectedFile();
+            this.lbNombreArchivo.setText(archivo.getName());
+    
+            //Aquie se subira la imagen o video
+
+        }
+    }//GEN-LAST:event_btnCambiarFotoMouseClicked
 
     public int comprobarDatos(){
         if(this.txtNombreUsuario.getText().isBlank() || this.txtNombreCompleto.getText().isBlank() ||
@@ -408,6 +452,7 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbNombreArchivo;
     private javax.swing.JPasswordField txtConfirmPassword;
     private javax.swing.JTextField txtCorreoElectronico;
     private javax.swing.JTextArea txtDescripcion;

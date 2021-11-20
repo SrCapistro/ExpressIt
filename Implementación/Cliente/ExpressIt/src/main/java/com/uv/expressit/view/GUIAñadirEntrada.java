@@ -4,9 +4,13 @@
  */
 package com.uv.expressit.view;
 
+import com.uv.expressit.DAO.DAOEntrada;
+import com.uv.expressit.POJO.Entrada;
+import com.uv.expressit.POJO.Hashtag;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,12 +20,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author josuecg
  */
 public class GUIAñadirEntrada extends javax.swing.JFrame {
-
+    Entrada entradaNueva = new Entrada();
+    String cadenaHashtags = "";
+    ArrayList<Hashtag> listaHashtags = new ArrayList<Hashtag>();
     /**
      * Creates new form GUIAñadirEntrada
      */
     public GUIAñadirEntrada() {
         initComponents();
+        this.setTitle("Añadir entrada nueva");
     }
 
     /**
@@ -75,6 +82,9 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
         btnPublicar.setBackground(new java.awt.Color(0, 116, 158));
         btnPublicar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPublicarMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnPublicarMouseEntered(evt);
             }
@@ -140,6 +150,9 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
         btnAñadirMultimedia.setBackground(new java.awt.Color(0, 116, 158));
         btnAñadirMultimedia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAñadirMultimediaMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAñadirMultimediaMouseEntered(evt);
             }
@@ -194,6 +207,9 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
         btnAñadirHashtag.setBackground(new java.awt.Color(0, 116, 158));
         btnAñadirHashtag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAñadirHashtagMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAñadirHashtagMouseEntered(evt);
             }
@@ -265,24 +281,7 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
 
     private void btnAñadirMultimediaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseEntered
         this.btnAñadirMultimedia.setBackground(Color.decode("#00b0f0"));
-        File imagen;
-        int resultado;
         
-        GUICargarArchivo Buscador = new GUICargarArchivo();  
-        FileNameExtensionFilter format = new FileNameExtensionFilter("JPG, PNG, GIF, MP4, AVI, MKV, FLV, MOV", 
-                                                                     "jpg", "jpeg", "png", "gif", "mp4", "avi", "mkv", "flv", "mov");
-               
-        Buscador.fcBuscador.setFileFilter(format);    
-        resultado = Buscador.fcBuscador.showOpenDialog(null);
-        
-        if(JFileChooser.APPROVE_OPTION == resultado){
-            
-            imagen = Buscador.fcBuscador.getSelectedFile();
-            lbNombreArchivo.setText(imagen.getName());
-    
-            //Aquie se subira la imagen o video
-
-        }
     }//GEN-LAST:event_btnAñadirMultimediaMouseEntered
 
     private void btnAñadirMultimediaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseExited
@@ -302,6 +301,50 @@ public class GUIAñadirEntrada extends javax.swing.JFrame {
             this.txtAñadirHashtags.setText("");
         }
     }//GEN-LAST:event_txtAñadirHashtagsMouseClicked
+
+    private void btnAñadirMultimediaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirMultimediaMouseClicked
+        File imagen;
+        int resultado;
+        
+        GUICargarArchivo Buscador = new GUICargarArchivo();  
+        FileNameExtensionFilter format = new FileNameExtensionFilter("JPG, PNG, GIF, MP4, AVI, MKV, FLV, MOV", 
+                                                                     "jpg", "jpeg", "png", "gif", "mp4", "avi", "mkv", "flv", "mov");
+               
+        Buscador.fcBuscador.setFileFilter(format);    
+        resultado = Buscador.fcBuscador.showOpenDialog(null);
+        
+        if(JFileChooser.APPROVE_OPTION == resultado){
+            
+            imagen = Buscador.fcBuscador.getSelectedFile();
+            lbNombreArchivo.setText(imagen.getName());
+    
+            //Aquie se subira la imagen o video
+
+        }
+    }//GEN-LAST:event_btnAñadirMultimediaMouseClicked
+
+    private void btnPublicarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPublicarMouseClicked
+       if(this.txtEntrada.getText().isBlank()){
+           JOptionPane.showMessageDialog(this, "Debe de añadir texto a la entrada");
+       }else{
+           entradaNueva.setTextoEntrada(this.txtEntrada.getText());
+       }
+    }//GEN-LAST:event_btnPublicarMouseClicked
+
+    private void btnAñadirHashtagMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAñadirHashtagMouseClicked
+        if(this.txtAñadirHashtags.getText().isBlank() || this.txtAñadirHashtags.getText().equals("Añade #hashtags")){
+            JOptionPane.showMessageDialog(this, "Debe añadir texto para el hashtag");
+        }else{
+            Hashtag hashtagObtenido = DAOEntrada.obtenerHashtag(this.txtAñadirHashtags.getText());
+            if(hashtagObtenido == null){
+                hashtagObtenido = new Hashtag();
+                hashtagObtenido.setTextoHashtag("#"+this.txtAñadirHashtags.getText());
+            }
+            cadenaHashtags = cadenaHashtags + hashtagObtenido.getTextoHashtag();
+            this.txtHashtags.setText(cadenaHashtags);
+            listaHashtags.add(hashtagObtenido);
+        }
+    }//GEN-LAST:event_btnAñadirHashtagMouseClicked
 
     /**
      * @param args the command line arguments

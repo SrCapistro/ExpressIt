@@ -86,7 +86,6 @@ router.get('/obtenerId_ultimaEntrada', (req, res)=>{
   pool.query('SELECT MAX(ent_idEntrada) as ent_idEntrada FROM Entrada;', (err,rows)=>{
     if(err) return res.send(err)
     res.json(rows)
-    console.log("Hola: ", rows)
   })
 })
 
@@ -128,6 +127,15 @@ router.post('/asociar_hashtags', (req, res)=>{
     res.send("Registro exitoso")
   })
 })
+
+//Obtener un hashtag
+router.post('/hashtag/', (req, res) =>{
+  pool.query('select h.htg_idHashtag, h.htg_nombre from Hashtag h where h.htg_nombre = "?";', [req.body.htg_nombre], (err, rows)=>{
+    if(err) return res.send(req.body.htg_nombre)
+    res.json(rows)
+  })
+})
+
 
 router.get('/hashtags/:idEntrada', (req, res)=>{
   pool.query('select h.htg_nombre from Hashtag h join EntradaHashtag eh '+

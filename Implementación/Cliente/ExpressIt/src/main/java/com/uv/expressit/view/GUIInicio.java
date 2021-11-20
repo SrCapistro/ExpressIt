@@ -712,15 +712,11 @@ public class GUIInicio extends javax.swing.JFrame {
                 
                 JPanel seccionEntrada = new JPanel();
                 JPanel paneBotones = new JPanel();
-                JPanel multiMedia = new JPanel();
+                
                 String meGusta = String.valueOf(entradaMostrar.getLikesEntrada());
                 JLabel lbContadorMeGusta = new JLabel("Me gusta: "+meGusta);
                 lbContadorMeGusta.setForeground(Color.white);
-                JLabel lbMultiMedia = new JLabel("Aqui va el contenido multimedia xd");
-                lbMultiMedia.setPreferredSize(new Dimension(200,200));
-                lbMultiMedia.setForeground(Color.white);
-                lbMultiMedia.setAlignmentX(CENTER_ALIGNMENT);
-                lbMultiMedia.setAlignmentY(CENTER_ALIGNMENT);
+               
                 
                 JLabel btnMeGusta = new JLabel("Me gusta");
                 btnMeGusta.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -796,12 +792,31 @@ public class GUIInicio extends javax.swing.JFrame {
                         lbUsuarioTuit.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     }
                 });
-                
-                multiMedia.setBackground(Color.decode("#29292B"));
-                multiMedia.setPreferredSize(new Dimension(200,200));
-                multiMedia.add(lbMultiMedia);
-                
+                JPanel multiMedia = new JPanel();
                 paneBotones.setLayout(borderLayout2);
+                BufferedImage imgEntrada = DAOArchivo.obtenerFotoEntrada(entradaMostrar.getIdEntrada());
+                if(imgEntrada != null){
+                     JLabel lbMultiMedia = new JLabel("Aqui va el contenido multimedia xd");
+                    lbMultiMedia.setPreferredSize(new Dimension(200,200));
+                    lbMultiMedia.setForeground(Color.white);
+                    lbMultiMedia.setAlignmentX(CENTER_ALIGNMENT);
+                    lbMultiMedia.setAlignmentY(CENTER_ALIGNMENT);
+                    Image imagenEntrada =imgEntrada.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+                    lbMultiMedia.setIcon(new ImageIcon(imagenEntrada));
+                    multiMedia.add(lbMultiMedia);
+                }else{
+                    multiMedia.setVisible(false);
+                }
+                
+                
+                 
+                 
+                 multiMedia.setBackground(Color.decode("#29292B"));
+                 multiMedia.setPreferredSize(new Dimension(200,200));
+                 
+                
+                
+               
                 paneBotones.add(multiMedia, BorderLayout.PAGE_START);
                 paneBotones.add(btnMeGusta, BorderLayout.LINE_START);
                 paneBotones.add(lbContadorMeGusta, BorderLayout.LINE_END);

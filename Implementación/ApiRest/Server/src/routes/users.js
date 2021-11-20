@@ -22,7 +22,7 @@ router.post('/signup', async (req, res) =>{
 })
 
 router.get('/',(req, res) =>{
-  res.send("Conxexión éxitosa")
+  res.send("Conexión éxitosa")
 })
 
 
@@ -37,7 +37,7 @@ router.post('/registrar_nuevo_usuario', (req, res)=>{
   var contra = req.body.usr_contraseña
   var nacimiento = req.body.usr_fechaNacimiento
 
-  pool.query('INSERT INTO usuario set usr_nombreUsuario = ?, usr_descripcion = ?, usr_estatus = ?, usr_nombre = ?,'
+  pool.query('INSERT INTO Usuario set usr_nombreUsuario = ?, usr_descripcion = ?, usr_estatus = ?, usr_nombre = ?,'
   + ' usr_correo = ?, usr_tipoUsuario = ?, usr_contraseña = ?, usr_fechaNacimiento = ?;',
   [nombreUsuario, descripcion, estatus, nombreCompleto, correo, tipoUsuario, contra, nacimiento], (err, rows)=>{
     if(err) return res.send(err.message)
