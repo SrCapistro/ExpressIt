@@ -97,4 +97,62 @@ router.delete('/dejar_seguir/:idSeguidor/:idSeguido', (req, res) =>{
   })
 })
 
+//Datos de un unico usuario
+router.get('/datos/usuario/:idUsuario', async (req, res)=>{
+  var idUsuario = req.params.idUsuario
+  pool.query('SELECT * FROM usuario where usr_idUsuario = ?;', [idUsuario],(err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+  })
+})
+
+//actualizar datos de usuario
+router.post('/actualizarUsuario', (req, res)=>{
+  var idUsuario = req.body.usr_idUsuario
+  var nombreUsuario = req.body.usr_nombreUsuario
+  var descripcion = req.body.usr_descripcion
+  var nombreCompleto = req.body.usr_nombre
+  var correo = req.body.usr_correo
+  var contra = req.body.usr_contraseña
+  var nacimiento = req.body.usr_fechaNacimiento
+
+  pool.query('UPDATE usuario SET usr_nombreUsuario = ?, usr_descripcion = ?, usr_nombre = ?, usr_correo =?, usr_contraseña = ?, usr_fechaNacimiento = ? WHERE usr_idUsuario = ?;',
+  [nombreUsuario, descripcion, nombreCompleto, correo, contra, nacimiento, idUsuario], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Actualizacion exitoso")
+  })
+})
+
+//Verificar que la actualizacion del usuario no exista
+router.get('/obtenerUsuario/:idUsuario/:nombreUsuario', (req, res) => {
+  pool.query('SELECT COUNT(usr_idUsuario) AS cantidad FROM usuario WHERE usr_nombreUsuario = ? AND usr_idUsuario != ?;', [req.params.nombreUsuario, req.params.idUsuario], (err, rows)=>{
+    if (err) return res.send(err)
+    try{
+      var cantidadArchivo = rows[0];
+        res.send(cantidadArchivo)
+    }catch(error){
+      res.send(error)
+    }
+  })
+})
+
+//Se elimina la foto de perfil del usuario que se va a modificar
+router.delete('/eliminarFotoPerfil/:idUsuario', (req, res)=>{
+  pool.query('DELETE FROM archivo WHERE arc_idUsuario = ?;', [req.params.idUsuario], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.json({"respuesta":200})
+  })
+})
+
+// Se actualiza el estatus del usuario de uno a cero
+router.post('/DarDeBajaUsuario', (req, res)=>{
+  var idUsuario = req.body.usr_idUsuario
+  var estatus = req.body.usr_estado
+  
+  pool.query('UPDATE usuario SET  usr_estatus = ? WHERE usr_idUsuario = ?;', [estatus, idUsuario], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.send("Dada de baja")
+  })
+})
+
 module.exports = router;

@@ -85,5 +85,18 @@ router.get('/media/:idEntrada', (req, res)=>{
   })
 })
 
+//El usuario tiene foto
+router.get('/media/existeFoto/:idEntrada', (req, res)=>{
+  pool.query("select count(arc_idArchivo) as numeroFoto from Archivo where arc_idUsuario = ?",[req.params.idEntrada], (err, rows) =>{
+    if (err) return res.send(err)
+  try{
+    var cantidadArchivo = rows[0];
+      res.send(cantidadArchivo)
+  }catch(error){
+    res.send(error)
+  }
+  })
+})
+
 
 module.exports = router;
