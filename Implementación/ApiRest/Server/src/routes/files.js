@@ -2,28 +2,31 @@
 const express = require('express');
 const pool = require('../database');
 const multer = require('multer')
+const multerPerfil = require('multer')
 const path = require('path');
 const mimeTypes = require('mime-types')
 const router = express.Router();
 
 //Metodos para subir las fotos de perfil de los usuarios
-const storagepp = multer.diskStorage({
-  destination: './profile_pictures',
+const storagepp = multerPerfil.diskStorage({
+  destination: './profile_pictures',,
   filename: function(req, file, cb){
-    var fileName = Date.now()+"."+mimeTypes.extension(file.mimetype)
     var idUsuario = req.params.idUsuario
+    var format = req.params.format
+    var fileName = Date.now()+"."+format
     cb("", fileName);
     pool.query("INSERT into Archivo set arc_nombreArchivo = ?, arc_idUsuario = ?;",[fileName, idUsuario])
   }
 })
 
-const uploadpp = multer({
+const uploadpp = multerPerfil({
   storage: storagepp
 })
 
-router.get("/media/usuarios/:idUsuario", uploadpp.single('archivo'),(req, res)=>{
+router.post("/media/usuarios/:idUsuario/:format", uploadpp.single('imgFile'),(req, res)=>{
   res.send("Listo")
 })
+
 
 //Obtener fotos de perfil
 router.get("/media/profile_pictures/:idUsuario", (req, res)=>{
