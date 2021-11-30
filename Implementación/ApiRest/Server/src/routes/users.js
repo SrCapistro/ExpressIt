@@ -155,4 +155,13 @@ router.post('/DarDeBajaUsuario', (req, res)=>{
   })
 })
 
+//Datos especificos de los usuarios
+router.get('/datos/todos', async (req, res)=>{
+  var idUsuario = req.params.idUsuario
+  pool.query('SELECT usr_idUsuario, usr_nombreUsuario, usr_nombre, usr_tipoUsuario FROM usuario ;', [idUsuario],(err,rows)=>{
+    if(err) return res.send(err)
+    res.json(rows)
+  })
+})
+
 module.exports = router;
