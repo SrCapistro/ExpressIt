@@ -45,4 +45,6 @@ public class DAOArchivo {
         img = ImageIO.read(in);
         return img;
     }
+    
+
 }

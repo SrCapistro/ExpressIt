@@ -9,7 +9,7 @@ const router = express.Router();
 
 //Metodos para subir las fotos de perfil de los usuarios
 const storagepp = multerPerfil.diskStorage({
-  destination: './profile_pictures',,
+  destination: './profile_pictures',
   filename: function(req, file, cb){
     var idUsuario = req.params.idUsuario
     var format = req.params.format

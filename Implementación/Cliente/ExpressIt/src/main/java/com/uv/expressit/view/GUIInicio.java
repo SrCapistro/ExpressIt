@@ -708,7 +708,7 @@ public class GUIInicio extends javax.swing.JFrame {
                 entradaMostrar.setUsuarioLike(DAOEntrada.usuarioLike(entradaMostrar.getIdEntrada(), GUIlogin.usuarioLogeado.getIdUsuario()));
                 BorderLayout borderLayout = new BorderLayout();
                 BorderLayout borderLayout2 = new BorderLayout();
-                //Border lineBorder = BorderFactory.createLineBorder(Color.BLACK,4);
+                
                 
                 JPanel seccionEntrada = new JPanel();
                 JPanel paneBotones = new JPanel();
@@ -763,7 +763,7 @@ public class GUIInicio extends javax.swing.JFrame {
                 areaText.setBackground(Color.decode("#29292B"));
                 areaText.setEditable(false);
                 areaText.setFont(new Font("SansSerif", Font.PLAIN, 16));
-                areaText.setPreferredSize(new Dimension(200,200));
+              
                 
                 JLabel lbUsuarioTuit = new JLabel("Publicado por: "
                         +entradaMostrar.getNombreUsuario()+", el "+entradaMostrar.getFechaEntrada());
@@ -796,12 +796,11 @@ public class GUIInicio extends javax.swing.JFrame {
                 paneBotones.setLayout(borderLayout2);
                 BufferedImage imgEntrada = DAOArchivo.obtenerFotoEntrada(entradaMostrar.getIdEntrada());
                 if(imgEntrada != null){
-                     JLabel lbMultiMedia = new JLabel("Aqui va el contenido multimedia xd");
-                    lbMultiMedia.setPreferredSize(new Dimension(200,200));
+                     JLabel lbMultiMedia = new JLabel();
                     lbMultiMedia.setForeground(Color.white);
                     lbMultiMedia.setAlignmentX(CENTER_ALIGNMENT);
                     lbMultiMedia.setAlignmentY(CENTER_ALIGNMENT);
-                    Image imagenEntrada =imgEntrada.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+                    Image imagenEntrada =imgEntrada.getScaledInstance(450, 450, Image.SCALE_SMOOTH);
                     lbMultiMedia.setIcon(new ImageIcon(imagenEntrada));
                     multiMedia.add(lbMultiMedia);
                 }else{
@@ -812,7 +811,7 @@ public class GUIInicio extends javax.swing.JFrame {
                  
                  
                  multiMedia.setBackground(Color.decode("#29292B"));
-                 multiMedia.setPreferredSize(new Dimension(200,200));
+                 //multiMedia.setPreferredSize(new Dimension(800,800));
                  
                 
                 

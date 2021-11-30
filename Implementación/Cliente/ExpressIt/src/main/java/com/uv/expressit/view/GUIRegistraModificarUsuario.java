@@ -51,7 +51,7 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
     public void cargarDatosUsuario(Usuario usuario){
         this.txtNombreUsuario.setText(usuario.getNombreUsuario());
         this.txtNombreCompleto.setText(usuario.getNombreCompletoUsuario());
-        this.txtFechaNacimiento.setText(usuario.getFechaNacUsuario());
+        this.txtFechaDia.setText(usuario.getFechaNacUsuario());
         this.txtCorreoElectronico.setText(usuario.getCorreoUsuario());
         this.txtDescripcion.setText(usuario.getDescripcionUsuario());
     }
@@ -73,7 +73,7 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
         txtNombreCompleto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtCorreoElectronico = new javax.swing.JTextField();
-        txtFechaNacimiento = new javax.swing.JTextField();
+        txtFechaDia = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
@@ -89,6 +89,8 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         lbNombreArchivo = new javax.swing.JLabel();
+        txtFechaMes = new javax.swing.JTextField();
+        txtFechaAño = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,13 +118,10 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
 
         txtCorreoElectronico.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
 
-        txtFechaNacimiento.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
-        txtFechaNacimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtFechaDia.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        txtFechaDia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFechaNacimientoKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFechaNacimientoKeyTyped(evt);
+                txtFechaDiaKeyPressed(evt);
             }
         });
 
@@ -225,6 +224,26 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
         lbNombreArchivo.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
         lbNombreArchivo.setForeground(new java.awt.Color(255, 255, 255));
 
+        txtFechaMes.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        txtFechaMes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFechaMesKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFechaMesKeyTyped(evt);
+            }
+        });
+
+        txtFechaAño.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        txtFechaAño.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFechaAñoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFechaAñoKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
@@ -248,10 +267,15 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
                         .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtConfirmPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                             .addComponent(txtPassword)
-                            .addComponent(txtFechaNacimiento)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel7)))
+                            .addComponent(jLabel7)
+                            .addGroup(bgLayout.createSequentialGroup()
+                                .addComponent(txtFechaDia, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtFechaMes, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtFechaAño))))
                     .addGroup(bgLayout.createSequentialGroup()
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(343, 343, 343)
@@ -273,7 +297,9 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaDia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaMes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaAño, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -324,8 +350,18 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
            JOptionPane.showMessageDialog(this, "Debe ingresar todos los datos para registrarse", "Datos faltantes", JOptionPane.INFORMATION_MESSAGE);
        }
        else{
-           if(this.txtCorreoElectronico.getText().contains("@")){
-               if(this.txtFechaNacimiento.getText().length() == 10){
+           if(!esNuevo){
+               Usuario usuarioModificar = new Usuario();
+               usuarioModificar.setNombreUsuario(this.txtNombreUsuario.getText());
+               usuarioModificar.setFechaNacUsuario(this.txtFechaDia.getText()+"/"+this.txtFechaMes.getText()+"/"+this.txtFechaAño.getText());
+               usuarioModificar.setIdUsuario(GUIlogin.usuarioLogeado.getIdUsuario());
+               usuarioModificar.setCorreoUsuario(this.txtCorreoElectronico.getText());
+               usuarioModificar.setDescripcionUsuario(this.txtDescripcion.getText());
+               usuarioModificar.setContraseñaUsuario(this.txtPassword.getPassword().toString());
+               
+           }else{
+               if(this.txtCorreoElectronico.getText().contains("@")){
+               if(this.txtFechaDia.getText().length() == 2 && this.txtFechaMes.getText().length() == 2 && this.txtFechaAño.getText().length() == 4){
                    try {
                     Usuario usuarioRegistrar = new Usuario();
                     usuarioRegistrar.setNombreUsuario(this.txtNombreUsuario.getText());
@@ -333,7 +369,7 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
                     usuarioRegistrar.setCorreoUsuario(this.txtCorreoElectronico.getText());
                     usuarioRegistrar.setDescripcionUsuario(this.txtDescripcion.getText());
                     usuarioRegistrar.setContraseñaUsuario(this.txtPassword.getPassword().toString());
-                    usuarioRegistrar.setFechaNacUsuario(this.txtFechaNacimiento.getText());
+                    usuarioRegistrar.setFechaNacUsuario(this.txtFechaDia.getText());
                     String mensaje = DAOUsuario.registrarUsuario(usuarioRegistrar);
                     JOptionPane.showMessageDialog(this, mensaje, "Registro", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IOException ex) {
@@ -345,6 +381,7 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
            }else{
                JOptionPane.showMessageDialog(this, "Formato de correo electrónico inavlido", "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
            }
+           }
        }
     }//GEN-LAST:event_btnGuardarModificacionMouseClicked
 
@@ -352,30 +389,10 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarMouseClicked
 
-    private void txtFechaNacimientoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaNacimientoKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-            this.txtFechaNacimiento.setEditable(true);
-        }
-       if(evt.getKeyCode() >= 48 && evt.getKeyCode()<=57){
-           this.txtFechaNacimiento.setEditable(true);
-       }
-    }//GEN-LAST:event_txtFechaNacimientoKeyPressed
-
-    private void txtFechaNacimientoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaNacimientoKeyTyped
-       String fecha = this.txtFechaNacimiento.getText();
-       if(fecha.length() == 4){
-           this.txtFechaNacimiento.setText(fecha+"/");
-       }else if(fecha.length() == 7){
-           this.txtFechaNacimiento.setText(fecha+"/");
-       }else if(fecha.length() == 10){
-           this.txtFechaNacimiento.setEditable(false);
-       }
-    }//GEN-LAST:event_txtFechaNacimientoKeyTyped
-
     private void btnCambiarFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCambiarFotoMouseClicked
        GUICargarArchivo Buscador = new GUICargarArchivo();  
         FileNameExtensionFilter format = new FileNameExtensionFilter("JPG, PNG, GIF, MP4, AVI, MKV, FLV, MOV", 
-                                                            "jpg", "jpeg", "png", "gif", "mp4", "avi", "mkv", "flv", "mov");
+                                                            "jpg", "jpeg", "png", "gif");
         File archivo;
         int resultado;
                
@@ -388,13 +405,58 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
             this.lbNombreArchivo.setText(archivo.getName());
     
             //Aquie se subira la imagen o video
-
+            
+            
         }
     }//GEN-LAST:event_btnCambiarFotoMouseClicked
 
+   
+    
+    private void txtFechaMesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaMesKeyPressed
+        if(this.txtFechaMes.getText().length() == 1){
+            this.txtFechaAño.grabFocus();
+        }
+        if(evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9'){
+           this.txtFechaMes.setEditable(true);
+       }else{
+           this.txtFechaMes.setEditable(false);
+       }
+        
+    }//GEN-LAST:event_txtFechaMesKeyPressed
+
+    private void txtFechaMesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaMesKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaMesKeyTyped
+
+    private void txtFechaAñoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaAñoKeyPressed
+        if(this.txtFechaAño.getText().length() == 3){
+            this.txtPassword.grabFocus();
+        }
+        if(evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9'){
+           this.txtFechaAño.setEditable(true);
+       }else{
+           this.txtFechaAño.setEditable(false);
+       }
+    }//GEN-LAST:event_txtFechaAñoKeyPressed
+
+    private void txtFechaAñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaAñoKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaAñoKeyTyped
+
+    private void txtFechaDiaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaDiaKeyPressed
+       if(this.txtFechaDia.getText().length() == 1){
+           this.txtFechaMes.grabFocus();
+       }
+       if(evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9'){
+           this.txtFechaDia.setEditable(true);
+       }else{
+           this.txtFechaDia.setEditable(false);
+       }
+    }//GEN-LAST:event_txtFechaDiaKeyPressed
+
     public int comprobarDatos(){
         if(this.txtNombreUsuario.getText().isBlank() || this.txtNombreCompleto.getText().isBlank() ||
-                this.txtCorreoElectronico.getText().isBlank() || this.txtFechaNacimiento.getText().isBlank() ||
+                this.txtCorreoElectronico.getText().isBlank() || this.txtFechaDia.getText().isBlank() ||
                 this.txtPassword.getPassword().toString().isBlank()){
             return 1;
         }
@@ -456,7 +518,9 @@ public class GUIRegistraModificarUsuario extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtConfirmPassword;
     private javax.swing.JTextField txtCorreoElectronico;
     private javax.swing.JTextArea txtDescripcion;
-    private javax.swing.JTextField txtFechaNacimiento;
+    private javax.swing.JTextField txtFechaAño;
+    private javax.swing.JTextField txtFechaDia;
+    private javax.swing.JTextField txtFechaMes;
     private javax.swing.JTextField txtNombreCompleto;
     private javax.swing.JTextField txtNombreUsuario;
     private javax.swing.JPasswordField txtPassword;
