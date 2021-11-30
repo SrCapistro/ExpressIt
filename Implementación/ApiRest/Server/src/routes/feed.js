@@ -121,8 +121,8 @@ router.get('/obtenerId_hashtags/:idHashtag', (req, res)=>{
 router.post('/asociar_hashtags', (req, res)=>{
   var idHashtag = req.body.eh_idHashtag
   var idEntrada = req.body.eh_idEntrada
-  console.log("hola", req.body)
-  pool.query('INSERT INTO Entradahashtag set eh_idHashtag = ?, eh_idEntrada = ?;', [idHashtag, idEntrada], (err, rows)=>{
+  console.log("hola", req.body.eh_idHashtag)
+  pool.query('INSERT INTO EntradaHashtag set eh_idHashtag = ?, eh_idEntrada = ?;', [idHashtag, idEntrada], (err, rows)=>{
     if(err) return res.send(err.message)
     res.send("Registro exitoso")
   })

@@ -100,7 +100,7 @@ router.delete('/dejar_seguir/:idSeguidor/:idSeguido', (req, res) =>{
 //Datos de un unico usuario
 router.get('/datos/usuario/:idUsuario', async (req, res)=>{
   var idUsuario = req.params.idUsuario
-  pool.query('SELECT * FROM usuario where usr_idUsuario = ?;', [idUsuario],(err,rows)=>{
+  pool.query('SELECT * FROM Usuario where usr_idUsuario = ?;', [idUsuario],(err,rows)=>{
     if(err) return res.send(err)
     res.json(rows)
   })
@@ -116,7 +116,7 @@ router.post('/actualizarUsuario', (req, res)=>{
   var contra = req.body.usr_contraseña
   var nacimiento = req.body.usr_fechaNacimiento
 
-  pool.query('UPDATE usuario SET usr_nombreUsuario = ?, usr_descripcion = ?, usr_nombre = ?, usr_correo =?, usr_contraseña = ?, usr_fechaNacimiento = ? WHERE usr_idUsuario = ?;',
+  pool.query('UPDATE Usuario SET usr_nombreUsuario = ?, usr_descripcion = ?, usr_nombre = ?, usr_correo =?, usr_contraseña = ?, usr_fechaNacimiento = ? WHERE usr_idUsuario = ?;',
   [nombreUsuario, descripcion, nombreCompleto, correo, contra, nacimiento, idUsuario], (err, rows)=>{
     if(err) return res.send(err.message)
     res.send("Actualizacion exitoso")
@@ -125,7 +125,7 @@ router.post('/actualizarUsuario', (req, res)=>{
 
 //Verificar que la actualizacion del usuario no exista
 router.get('/obtenerUsuario/:idUsuario/:nombreUsuario', (req, res) => {
-  pool.query('SELECT COUNT(usr_idUsuario) AS cantidad FROM usuario WHERE usr_nombreUsuario = ? AND usr_idUsuario != ?;', [req.params.nombreUsuario, req.params.idUsuario], (err, rows)=>{
+  pool.query('SELECT COUNT(usr_idUsuario) AS cantidad FROM Usuario WHERE usr_nombreUsuario = ? AND usr_idUsuario != ?;', [req.params.nombreUsuario, req.params.idUsuario], (err, rows)=>{
     if (err) return res.send(err)
     try{
       var cantidadArchivo = rows[0];
@@ -138,7 +138,7 @@ router.get('/obtenerUsuario/:idUsuario/:nombreUsuario', (req, res) => {
 
 //Se elimina la foto de perfil del usuario que se va a modificar
 router.delete('/eliminarFotoPerfil/:idUsuario', (req, res)=>{
-  pool.query('DELETE FROM archivo WHERE arc_idUsuario = ?;', [req.params.idUsuario], (err, rows)=>{
+  pool.query('DELETE FROM Archivo WHERE arc_idUsuario = ?;', [req.params.idUsuario], (err, rows)=>{
     if(err) return res.send(err.message)
     res.json({"respuesta":200})
   })
@@ -148,8 +148,8 @@ router.delete('/eliminarFotoPerfil/:idUsuario', (req, res)=>{
 router.post('/DarDeBajaUsuario', (req, res)=>{
   var idUsuario = req.body.usr_idUsuario
   var estatus = req.body.usr_estado
-  
-  pool.query('UPDATE usuario SET  usr_estatus = ? WHERE usr_idUsuario = ?;', [estatus, idUsuario], (err, rows)=>{
+
+  pool.query('UPDATE Usuario SET  usr_estatus = ? WHERE usr_idUsuario = ?;', [estatus, idUsuario], (err, rows)=>{
     if(err) return res.send(err.message)
     res.send("Dada de baja")
   })
@@ -158,7 +158,7 @@ router.post('/DarDeBajaUsuario', (req, res)=>{
 //Datos especificos de los usuarios
 router.get('/datos/todos', async (req, res)=>{
   var idUsuario = req.params.idUsuario
-  pool.query('SELECT usr_idUsuario, usr_nombreUsuario, usr_nombre, usr_tipoUsuario FROM usuario ;', [idUsuario],(err,rows)=>{
+  pool.query('SELECT usr_idUsuario, usr_nombreUsuario, usr_nombre, usr_tipoUsuario FROM Usuario ;', [idUsuario],(err,rows)=>{
     if(err) return res.send(err)
     res.json(rows)
   })
