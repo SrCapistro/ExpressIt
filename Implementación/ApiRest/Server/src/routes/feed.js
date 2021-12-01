@@ -180,4 +180,20 @@ router.delete('/borrarHashtag_moderador/:idHashtag', (req, res) =>{
   })
 })
 
+router.get('/busqueda/hashtag/:nombreHashtag', (req, res) =>{
+  var hashtagRecibid = '#' + req.params.nombreHashtag
+  pool.query('SELECT H.htg_idHashtag, H.htg_nombre, E.ent_idEntrada, E.ent_fechaEntrada, E.ent_textEntrada, E.ent_idUsuario, U.usr_nombreUsuario, ' + 
+             ' (SELECT COUNT(ME.lk_idEntrada) FROM MeGusta AS ME WHERE ME.lk_idEntrada = E.ent_idEntrada) AS lk_cantidad,' +
+             '(SELECT lk_idUsuario FROM MeGusta mg2 WHERE mg2.lk_idEntrada = e.ent_idEntrada AND lk_idUsuario = U.usr_idUsuario) AS tu_Like' +
+             ' FROM Hashtag AS H ' + 
+             ' LEFT JOIN Entradahashtag AS EH on H.htg_idHashtag = EH.eh_idHashtag ' + 
+             ' LEFT JOIN Entrada AS E ON  EH.eh_idEntrada = E.ent_idEntrada '+
+             ' LEFT JOIN Usuario AS U ON E.ent_idUsuario = U.usr_idUsuario  '+
+             ' WHERE LOWER(H.htg_nombre) = LOWER(?);', [hashtagRecibid], (err, rows)=>{
+    if(err) return res.send(err.message)
+    res.json(rows)
+  })
+
+})
+
 module.exports = router;
