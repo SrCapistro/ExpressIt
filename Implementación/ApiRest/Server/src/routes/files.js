@@ -12,7 +12,8 @@ const storagepp = multerPerfil.diskStorage({
   destination: './profile_pictures',
   filename: function(req, file, cb){
     var idUsuario = req.params.idUsuario
-    var format = req.params.format
+    var format = "."+mimeTypes.extension(file.mimetype)
+
     var fileName = Date.now()+"."+format
     cb("", fileName);
     pool.query("INSERT into Archivo set arc_nombreArchivo = ?, arc_idUsuario = ?;",[fileName, idUsuario])
