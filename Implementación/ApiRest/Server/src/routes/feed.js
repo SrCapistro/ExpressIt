@@ -11,7 +11,19 @@ router.get('/entradas_seguidores/:idUsuario/:idEntrada', (req, res) => {
         '(SELECT COUNT(*) from MeGusta mg where mg.lk_idEntrada = e.ent_idEntrada) as likes_totales, ' +
         '(select lk_idUsuario from MeGusta mg2 where mg2.lk_idEntrada = e.ent_idEntrada and lk_idUsuario = ?) as tuLike, u.usr_nombreUsuario ' +
         'from Entrada e join Seguidor s on e.ent_idUsuario = s.sg_idSeguido and s.sg_idSeguidor = ?'+
-        'join Usuario u on u.usr_idUsuario = s.sg_idSeguido and e.ent_idEntrada < ? order by e.ent_idEntrada desc limit 6;' ,[req.params.idUsuario, req.params.idUsuario, req.params.idEntrada], (err, rows)=>{
+        'join Usuario u on u.usr_idUsuario = s.sg_idSeguido and e.ent_idEntrada < ? order by e.ent_idEntrada desc;' ,[req.params.idUsuario, req.params.idUsuario, req.params.idEntrada], (err, rows)=>{
+        if(err) return res.send(err);
+        res.json(rows);
+    })
+})
+
+//Este metodo trae las entradas de los seguidores filtrado por likes
+router.get('/entradas_seguidores_likes/:idUsuario/:idEntrada', (req, res) => {
+    pool.query('select e.ent_idEntrada, e.ent_fechaEntrada, e.ent_textEntrada, s.sg_idSeguido, '+
+  '(SELECT COUNT(*) from MeGusta mg where mg.lk_idEntrada = e.ent_idEntrada) as likes_totales, '+
+  '(select lk_idUsuario from MeGusta mg2 where mg2.lk_idEntrada = e.ent_idEntrada and lk_idUsuario = ?) as tuLike, u.usr_nombreUsuario'+
+  ' from Entrada e join Seguidor s on e.ent_idUsuario = s.sg_idSeguido and s.sg_idSeguidor = ? '+
+ ' join Usuario u on u.usr_idUsuario = s.sg_idSeguido ORDER by likes_totales desc;' ,[req.params.idUsuario, req.params.idUsuario, req.params.idEntrada], (err, rows)=>{
         if(err) return res.send(err);
         res.json(rows);
     })
